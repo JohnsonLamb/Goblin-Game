@@ -1,0 +1,23 @@
+16-03-2017
+
+- Followed the tutorial and got the basic functionality.
+
+- Made my own background image and got different images for the monster and the hero.
+
+- Centered the canvas
+
+- Made it so that when the player catches the goblin, the position of the hero does not reset.
+
+TO DO:
+
+- Make invisible walls on the edges (bushes)
+
+- The goblins can't spawn in the edges
+
+- Instead of "number of monsters caught" have a "score"
+
+- When the player catches a Goblin, display the score obtained above the goblin (like floating combat text in WoW)
+
+- Spawn a blue goblin with a timer. (starts flashing when timer is running out)
+
+- Spawn a Red goblin that moves towards the player and is also timed.
