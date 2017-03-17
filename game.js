@@ -6,6 +6,8 @@ _canvas.width = 680;
 _canvas.height = 480;
 document.getElementById("gameCanvas").appendChild(_canvas);
 
+// --- Images ---
+
 // Background image
 var _bgReady = false; //used to know when it's safe to draw the image
 var _bgImage = new Image();
@@ -22,13 +24,21 @@ _heroImage.onload = function () {
 };
 _heroImage.src = "images/hero.png";
 
-// Monster image
-var _monsterReady = false;
-var _monsterImage = new Image();
-_monsterImage.onload = function () {
-	_monsterReady = true;
+// Green Goblin image
+var _greenGoblinReady = false;
+var _greenGoblinImage = new Image();
+_greenGoblinImage.onload = function () {
+	_greenGoblinReady = true;
 };
-_monsterImage.src = "images/goblin.png";
+_greenGoblinImage.src = "images/greenGoblin.png";
+
+//Blue Goblin Image
+var _blueGoblinReady = false;
+var _blueGoblinImage = new Image();
+_blueGoblinImage.onload = function () {
+	_blueGoblinReady = true;
+};
+_blueGoblinImage.src = "images/blueGoblin.png";
 
 // Game objects
 var _hero = {
@@ -36,11 +46,29 @@ var _hero = {
 	x: 0,
 	y: 0
 };
-var _monster = {
+var _greenGoblin = {
 	x: 0,
 	y: 0
 };
-var _monstersCaught = 0;
+var _blueGoblin = {
+	x:120,
+	y:120
+};
+
+// Game Score
+var _goblinsCaught = 0; // total goblins caught
+var _pointsGreenGoblin = 5;
+var _pointsBlueGoblin = 50;
+var _pointsTotal = 0;
+var _pointsDisplayTime = 0.5; //varibale to control the amount of time the single goblin score is shown 
+var _greenGoblinCaught = false; //varibale to control if the green goblin is caught
+var _blueGoblinCaught = false; //varuiable to control if the blue goblin is caught
+var _blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
+var _blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
+var _blueGoblinAppChance = 0.3; //variable to control the probablity of appearance of the blue Goblin
+var _blueGoblinTimeout = 1.5; //variable to control the amount of time the BlueGoblin stays alive
+var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
+
 
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
@@ -62,42 +90,79 @@ addEventListener("keyup", function (e) {
 // Reset the game when the player catches a monster
 var reset = function () {
 	
-	if (_monstersCaught == 0){
+	if (_goblinsCaught == 0){
 	_hero.x = _canvas.width / 2;
 	_hero.y = _canvas.height / 2;
 	}
 
-	// Throw the monster somewhere on the screen randomly
-	_monster.x = 32 + (Math.random() * (_canvas.width - 64));
-	_monster.y = 32 + (Math.random() * (_canvas.height - 64));
+	// Throw the Green Goblin somewhere on the screen randomly
+	// The 50 subtracted to the height is to account for the Hero's movement restrictions. So that goblins don't spawn out of reach
+	// Why 50? First I used the width/height minus the pixels I restricted in the hero's update function (90 for width and 80 for height)
+	// Seemed a bit too much because spwans were more towards the inner part to the play area so reduced it to 50.
+	if (_greenGoblinCaught == true || _goblinsCaught == 0 ){
+		_greenGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
+		_greenGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64)); 
+	}
+	//Throw the Blue goblin somewhere on screen randomly
+	if (_blueGoblinCaught == true || _goblinsCaught == 0){
+		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
+		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
+	}
 };
 
 // Update game objects
 //the modifier variable is used to control the speed in which the Hero moves indepently of the speed the script is executed
 var _update = function (modifier) {
-	if (38 in _keysDown) { // Player holding up
+	//on top of checking where the player is intending to move the character, this function also checks to see if the Hero 
+	//is within the intended bounds. The hero is supposed to just move a bit into the bushes and not pass them
+	
+	if (38 in _keysDown && _hero.y >10) { // Player holding up 
 		_hero.y -= _hero.speed * modifier;
 	}
-	if (40 in _keysDown) { // Player holding down
+	if (40 in _keysDown && _hero.y<410) { // Player holding down
 		_hero.y += _hero.speed * modifier;
 	}
-	if (37 in _keysDown) { // Player holding left
+	if (37 in _keysDown && _hero.x >25) { // Player holding left
 		_hero.x -= _hero.speed * modifier;
 	}
-	if (39 in _keysDown) { // Player holding right
+	if (39 in _keysDown && _hero.x<615) { // Player holding right
 		_hero.x += _hero.speed * modifier;
 	}
 
-	// Are they touching?
+	// Is the hero Touching the Green Goblin?
 	if (
-		_hero.x <= (_monster.x + 32)
-		&& _monster.x <= (_hero.x + 32)
-		&& _hero.y <= (_monster.y + 32)
-		&& _monster.y <= (_hero.y + 32)
+		_hero.x <= (_greenGoblin.x + 32)
+		&& _greenGoblin.x <= (_hero.x + 32)
+		&& _hero.y <= (_greenGoblin.y + 32)
+		&& _greenGoblin.y <= (_hero.y + 32)
 	) {
-		++_monstersCaught;
+		++_goblinsCaught;
+		_pointsTotal += _pointsGreenGoblin;
+		_greenGoblinCaught = true;
+		//when a green goblin is caught, randomly make the Blue One Appear
+		if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
+		_blueGoblinAppeared = true;
+		_blueGoblinTimerControl = setTimeout(function() {
+			_blueGoblinAppeared = false;
+		}, _blueGoblinTimeout * 1000);
+		}
 		reset();
 	}
+	//is the hero touching the Blue Goblin?
+	if ( _blueGoblinAppeared == true &&
+		_hero.x <= (_blueGoblin.x + 32)
+		&& _blueGoblin.x <= (_hero.x + 32)
+		&& _hero.y <= (_blueGoblin.y + 32)
+		&& _blueGoblin.y <= (_hero.y + 32)
+	) {
+		++_goblinsCaught;
+		_pointsTotal += _pointsBlueGoblin;
+		_blueGoblinCaught = true;
+		_blueGoblinCaughtXY = [_blueGoblin.x,_blueGoblin.y]; //registers where the blue goblin was caught to show the points
+		_blueGoblinAppeared = false;
+		clearTimeout(_blueGoblinTimerControl);
+		reset();
+	} 
 };
 
 // Draw everything
@@ -110,8 +175,14 @@ var _render = function () {
 		_ctx.drawImage(_heroImage, _hero.x, _hero.y);
 	}
 
-	if (_monsterReady) {
-		_ctx.drawImage(_monsterImage, _monster.x, _monster.y);
+	if (_greenGoblinReady) {
+		_ctx.drawImage(_greenGoblinImage, _greenGoblin.x, _greenGoblin.y);
+	}
+	
+	if (_blueGoblinReady) {
+			if (_blueGoblinAppeared == true){
+			_ctx.drawImage(_blueGoblinImage, _blueGoblin.x, _blueGoblin.y);}
+		
 	}
 
 	// Score
@@ -123,7 +194,22 @@ var _render = function () {
 	_ctx.shadowOffsetX = 3;
     _ctx.shadowOffsetY = 3;
 	_ctx.shadowBlur = 4;
-	_ctx.fillText("Goblins caught: " + _monstersCaught, 50, 5);
+	//_ctx.fillText("Goblins caught: " + _greenGoblinsCaught, 50, 5); OLD display of monsters caught
+	_ctx.fillText("SCORE: "+_pointsTotal + " pts", 450, 5);
+	
+	//If a goblin was caught, display the points gained
+	if (_blueGoblinCaught == true){
+	_ctx.fillText(_pointsBlueGoblin + " pts", _blueGoblinCaughtXY[0], _blueGoblinCaughtXY[1]);
+		setTimeout(function() {
+			_blueGoblinCaught = false;
+		}, _pointsDisplayTime * 1000);
+	}
+	if (_greenGoblinCaught == true){_greenGoblinCaught = false;} //when the player catches a blue goblin this ensures that a new green goblin is not spawned.
+	/*
+	//test to see the hero coordinates:
+	_ctx.fillText("Y: " + _hero.y, 50, 25);
+	_ctx.fillText("X: " + _hero.x, 50, 55);
+	*/
 };
 
 // The main game loop

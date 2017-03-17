@@ -1,5 +1,7 @@
 16-03-2017
 
+DONE:
+
 - Followed the tutorial and got the basic functionality.
 
 - Made my own background image and got different images for the monster and the hero.
@@ -21,3 +23,15 @@ TO DO:
 - Spawn a blue goblin with a timer. (starts flashing when timer is running out)
 
 - Spawn a Red goblin that moves towards the player and is also timed.
+
+17-03-2017
+
+DONE:
+
+- Made invisible walls in the bushes
+
+- Made it so that goblins can't spawn in the bushes.
+
+- Now a score is displayed instead of monsters Caught. (each green goblin yields 5 points)
+
+- Added a blue Goblin that appears at random and lasts for 3 seconds. (it's worth 50 points)
