@@ -39,3 +39,11 @@ DONE:
 - Added a timer to the points the player gets from the Blue Goblin. The faster it's caught, the more points it yields
 
 - Added a floating text above the Blue Goblins when they are caught.
+
+TO DO:
+
+- Spawn a Red goblin that moves towards the player and is also timed. If the red Goblin hits the player, a live is lost.
+
+- Add a Hearts System representing the number of lives (3 lives seems reasonable)
+
+- [Maybe] Make a timer for the green goblins. The faster they are caught the higher the points down to the default 5 points.
