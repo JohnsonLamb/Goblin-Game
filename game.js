@@ -163,7 +163,7 @@ var _update = function (modifier) {
 		++_goblinsCaught;
 		_blueGoblinEndTime = new Date();
 		var _timeDiff = _blueGoblinEndTime - _blueGoblinStartTime;
-		if (_timeDiff == 0){_timeDiff = 3000;}
+		if (_timeDiff < 500){_timeDiff = 500;}
 		_pointsBlueGoblinTime = Math.round(_pointsBlueGoblin / (_timeDiff / 1000));
 		_pointsTotal += _pointsBlueGoblinTime;
 		_blueGoblinCaught = true;
