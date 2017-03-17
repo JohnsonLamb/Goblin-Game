@@ -32,6 +32,10 @@ DONE:
 
 - Made it so that goblins can't spawn in the bushes.
 
-- Now a score is displayed instead of monsters Caught. (each green goblin yields 5 points)
+- Now a score is displayed at the top of the screen, instead of monsters Caught. (each green goblin yields 5 points)
 
-- Added a blue Goblin that appears at random and lasts for 3 seconds. (it's worth 50 points)
+- Added a blue Goblin that appears at random and lasts for 3 seconds.
+
+- Added a timer to the points the player gets from the Blue Goblin. The faster it's caught, the more points it yields
+
+- Added a floating text above the Blue Goblins when they are caught.

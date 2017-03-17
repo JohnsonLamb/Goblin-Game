@@ -58,7 +58,8 @@ var _blueGoblin = {
 // Game Score
 var _goblinsCaught = 0; // total goblins caught
 var _pointsGreenGoblin = 5;
-var _pointsBlueGoblin = 50;
+var _pointsBlueGoblin = 50; // variable that holds the Blue Goblin Points standard
+var _pointsBlueGoblinTime = 0; //variable to hold the time dependent points the player gets for catching the Blue Goblin
 var _pointsTotal = 0;
 var _pointsDisplayTime = 0.5; //varibale to control the amount of time the single goblin score is shown 
 var _greenGoblinCaught = false; //varibale to control if the green goblin is caught
@@ -68,7 +69,9 @@ var _blueGoblinAppeared = false; // variable to control the appearance of the bl
 var _blueGoblinAppChance = 0.3; //variable to control the probablity of appearance of the blue Goblin
 var _blueGoblinTimeout = 1.5; //variable to control the amount of time the BlueGoblin stays alive
 var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
-
+var _blueGoblinStartTime;
+var _blueGoblinEndTime;
+var _blueGoblinCatchPoints = 0;
 
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
@@ -144,7 +147,9 @@ var _update = function (modifier) {
 		_blueGoblinAppeared = true;
 		_blueGoblinTimerControl = setTimeout(function() {
 			_blueGoblinAppeared = false;
+			
 		}, _blueGoblinTimeout * 1000);
+		_blueGoblinStartTime = new Date();
 		}
 		reset();
 	}
@@ -156,7 +161,10 @@ var _update = function (modifier) {
 		&& _blueGoblin.y <= (_hero.y + 32)
 	) {
 		++_goblinsCaught;
-		_pointsTotal += _pointsBlueGoblin;
+		_blueGoblinEndTime = new Date();
+		var _timeDiff = _blueGoblinEndTime - _blueGoblinStartTime;
+		_pointsBlueGoblinTime = Math.round(_pointsBlueGoblin / (_timeDiff / 1000));
+		_pointsTotal += _pointsBlueGoblinTime;
 		_blueGoblinCaught = true;
 		_blueGoblinCaughtXY = [_blueGoblin.x,_blueGoblin.y]; //registers where the blue goblin was caught to show the points
 		_blueGoblinAppeared = false;
@@ -199,10 +207,11 @@ var _render = function () {
 	
 	//If a goblin was caught, display the points gained
 	if (_blueGoblinCaught == true){
-	_ctx.fillText(_pointsBlueGoblin + " pts", _blueGoblinCaughtXY[0], _blueGoblinCaughtXY[1]);
+	_ctx.fillText(_pointsBlueGoblinTime + " pts", _blueGoblinCaughtXY[0], _blueGoblinCaughtXY[1]);
 		setTimeout(function() {
 			_blueGoblinCaught = false;
 		}, _pointsDisplayTime * 1000);
+		--_blueGoblinCaughtXY[1];
 	}
 	if (_greenGoblinCaught == true){_greenGoblinCaught = false;} //when the player catches a blue goblin this ensures that a new green goblin is not spawned.
 	/*
