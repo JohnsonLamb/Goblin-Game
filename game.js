@@ -40,6 +40,46 @@ _blueGoblinImage.onload = function () {
 };
 _blueGoblinImage.src = "images/blueGoblin.png";
 
+//Bloodlust EMPTY
+var _bloodLustEmptyReady = false;
+var _bloodLustEmptyImage = new Image();
+_bloodLustEmptyImage.onload = function () {
+	_bloodLustEmptyReady = true;
+};
+_bloodLustEmptyImage.src = "images/BloodlustEMPTY.png";
+
+//Bloodlust EMPTY 1
+var _bloodLustEmpty1Ready = false;
+var _bloodLustEmpty1Image = new Image();
+_bloodLustEmpty1Image.onload = function () {
+	_bloodLustEmpty1Ready = true;
+};
+_bloodLustEmpty1Image.src = "images/BloodlustEMPTY1.png";
+
+//Bloodlust EMPTY 2
+var _bloodLustEmpty2Ready = false;
+var _bloodLustEmpty2Image = new Image();
+_bloodLustEmpty2Image.onload = function () {
+	_bloodLustEmpty2Ready = true;
+};
+_bloodLustEmpty2Image.src = "images/BloodlustEMPTY2.png";
+
+//Bloodlust EMPTY 3
+var _bloodLustEmpty3Ready = false;
+var _bloodLustEmpty3Image = new Image();
+_bloodLustEmpty3Image.onload = function () {
+	_bloodLustEmpty3Ready = true;
+};
+_bloodLustEmpty3Image.src = "images/BloodlustEMPTY3.png";
+
+//Bloodlust EMPTY 4
+var _bloodLustEmpty4Ready = false;
+var _bloodLustEmpty4Image = new Image();
+_bloodLustEmpty4Image.onload = function () {
+	_bloodLustEmpty4Ready = true;
+};
+_bloodLustEmpty4Image.src = "images/BloodlustEMPTY4.png";
+
 //Bloodlust FULL
 var _bloodLustFullReady = false;
 var _bloodLustFullImage = new Image();
@@ -48,13 +88,7 @@ _bloodLustFullImage.onload = function () {
 };
 _bloodLustFullImage.src = "images/BloodlustFULL.png";
 
-//Bloodlust FULL
-var _bloodLustEmptyReady = false;
-var _bloodLustEmptyImage = new Image();
-_bloodLustEmptyImage.onload = function () {
-	_bloodLustEmptyReady = true;
-};
-_bloodLustEmptyImage.src = "images/BloodlustEMPTY.png";
+
 
 //Score
 var _scoreReady = false;
@@ -238,9 +272,35 @@ var _render = function () {
 		}
 	}
 	if (_bloodLust == false){
-		if (_bloodLustEmptyReady) {
-		_ctx.drawImage(_bloodLustEmptyImage, 50, 0);
+		switch (_bloodLustPoints){
+			case 0:
+				if (_bloodLustEmptyReady) {
+					_ctx.drawImage(_bloodLustEmptyImage, 50, 0);
+				}
+				break;
+			case 1:
+				if (_bloodLustEmpty1Ready) {
+					_ctx.drawImage(_bloodLustEmpty1Image, 50, 0);
+				}
+				break;
+			case 2:
+				if (_bloodLustEmpty2Ready) {
+					_ctx.drawImage(_bloodLustEmpty2Image, 50, 0);
+				}
+				break;
+			case 3:
+				if (_bloodLustEmpty3Ready) {
+					_ctx.drawImage(_bloodLustEmpty3Image, 50, 0);
+				}
+				break;
+			case 4:
+				if (_bloodLustEmpty4Ready) {
+					_ctx.drawImage(_bloodLustEmpty4Image, 50, 0);
+				}
+				break;
 		}
+		
+		
 	}	
 	if (_scoreReady) {
 		_ctx.drawImage(_scoreImage, 400, 0);

@@ -63,3 +63,5 @@ DONE:
 - Added instructions picture
 
 - Changed the color of the website's background
+
+- Added more images to create the effect of the Bloodlust Text filling up as the player catches Green Goblins
