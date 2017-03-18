@@ -40,6 +40,14 @@ _blueGoblinImage.onload = function () {
 };
 _blueGoblinImage.src = "images/blueGoblin.png";
 
+//red Goblin Image
+var _redGoblinReady = false;
+var _redGoblinImage = new Image();
+_redGoblinImage.onload = function () {
+	_redGoblinReady = true;
+};
+_redGoblinImage.src = "images/redGoblin.png";
+
 //Bloodlust EMPTY
 var _bloodLustEmptyReady = false;
 var _bloodLustEmptyImage = new Image();
@@ -114,6 +122,12 @@ var _blueGoblin = {
 	y:120
 };
 
+var _redGoblin = {
+	speed: 260,
+	x: 0,
+	y: 0
+}
+
 // Game Score
 var _goblinsCaught = 0; // total goblins caught
 var _pointsGreenGoblin = 5;
@@ -143,7 +157,8 @@ var _keysDown = {};
 
 addEventListener("keydown", function (e) {
 	_keysDown[e.keyCode] = true;
-	e.preventDefault();
+	if (e.keyCode != 116){
+	e.preventDefault();}
 }, false);
 
 addEventListener("keyup", function (e) {
@@ -171,6 +186,10 @@ var reset = function () {
 	if (_blueGoblinCaught == true || _goblinsCaught == 0){
 		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
+		/*
+		//throw the redGoblin somewhere in the screen randomly
+		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
+		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));*/
 	}
 };
 
@@ -267,6 +286,13 @@ var _render = function () {
 			_ctx.drawImage(_blueGoblinImage, _blueGoblin.x, _blueGoblin.y);}
 		
 	}
+	/*
+	if (_redGoblinReady) {
+			if (_blueGoblinAppeared == true){
+			_ctx.drawImage(_redGoblinImage, _redGoblin.x, _redGoblin.y);}
+		
+	}*/
+	
 	if (_bloodLust){
 		if (_bloodLustFullReady) {
 		_ctx.drawImage(_bloodLustFullImage, 50, 0);
