@@ -143,6 +143,7 @@ var _keysDown = {};
 
 addEventListener("keydown", function (e) {
 	_keysDown[e.keyCode] = true;
+	e.preventDefault();
 }, false);
 
 addEventListener("keyup", function (e) {

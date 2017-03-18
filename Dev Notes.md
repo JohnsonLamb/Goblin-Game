@@ -65,3 +65,5 @@ DONE:
 - Changed the color of the website's background
 
 - Added more images to create the effect of the Bloodlust Text filling up as the player catches Green Goblins
+
+- Prevented Scrolling with the arrowkeys. (In smaller screens the page scrolls up and down with the player's inputs)
