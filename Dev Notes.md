@@ -47,3 +47,19 @@ TO DO:
 - Add a Hearts System representing the number of lives (3 lives seems reasonable)
 
 - [Maybe] Make a timer for the green goblins. The faster they are caught the higher the points down to the default 5 points.
+
+--18-03-2017--
+
+DONE:
+
+- Added a speed mechanic: Bloodlust. When the player catches enough green goblins, the Bloodlust text will turn red indicating he can use the ability.
+
+	- Bloodlust ability: increases the speed of the Hero for 1 	second
+
+- Added the Bloodlust text art
+
+- Added the Score text Art
+
+- Added instructions picture
+
+- Changed the color of the website's background

@@ -1,8 +1,19 @@
-h4 {
-    text-align: center;
+body{
+	background-color:#303030;
 }
 
+h1,h3 {
+    color: #FFD800;
+	text-align: center;
+	font-family: Harrington;
+}
+#gameInstructions{ 
+	width: 500px;
+}
 #theGame{
+	border: thin solid #FFD800,
+}
+#theGame, #gameInstructions{
 	 
 	padding-left: 0;
     padding-right: 0;
@@ -10,3 +21,4 @@ h4 {
     margin-right: auto;
     display: block;
 }
+

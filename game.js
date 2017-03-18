@@ -40,9 +40,34 @@ _blueGoblinImage.onload = function () {
 };
 _blueGoblinImage.src = "images/blueGoblin.png";
 
+//Bloodlust FULL
+var _bloodLustFullReady = false;
+var _bloodLustFullImage = new Image();
+_bloodLustFullImage.onload = function () {
+	_bloodLustFullReady = true;
+};
+_bloodLustFullImage.src = "images/BloodlustFULL.png";
+
+//Bloodlust FULL
+var _bloodLustEmptyReady = false;
+var _bloodLustEmptyImage = new Image();
+_bloodLustEmptyImage.onload = function () {
+	_bloodLustEmptyReady = true;
+};
+_bloodLustEmptyImage.src = "images/BloodlustEMPTY.png";
+
+//Score
+var _scoreReady = false;
+var _scoreImage = new Image();
+_scoreImage.onload = function () {
+	_scoreReady = true;
+};
+_scoreImage.src = "images/Score.png";
+
 // Game objects
 var _hero = {
 	speed: 256, // movement in pixels per second
+	speedBuff: 30,
 	x: 0,
 	y: 0
 };
@@ -69,10 +94,11 @@ var _blueGoblinAppeared = false; // variable to control the appearance of the bl
 var _blueGoblinAppChance = 0.3; //variable to control the probablity of appearance of the blue Goblin
 var _blueGoblinTimeout = 1.5; //variable to control the amount of time the BlueGoblin stays alive
 var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
-var _blueGoblinStartTime;
-var _blueGoblinEndTime;
+var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spawns
+var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
 var _blueGoblinCatchPoints = 0;
-
+var _bloodLust = false; //variable to control the speed boost funtion
+var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -118,7 +144,6 @@ var reset = function () {
 var _update = function (modifier) {
 	//on top of checking where the player is intending to move the character, this function also checks to see if the Hero 
 	//is within the intended bounds. The hero is supposed to just move a bit into the bushes and not pass them
-	
 	if (38 in _keysDown && _hero.y >10) { // Player holding up 
 		_hero.y -= _hero.speed * modifier;
 	}
@@ -132,6 +157,16 @@ var _update = function (modifier) {
 		_hero.x += _hero.speed * modifier;
 	}
 
+	//Speed boost when pressing Space BLOODLUST
+	//when the player presses the SPACE key, the Hero gets a speed boost for 1 sec
+	if (32 in _keysDown && _bloodLust == true){
+		_hero.speed = _hero.speed + _hero.speedBuff;
+		
+		setTimeout(function() {
+			_bloodLust = false;
+			_hero.speed = 256;
+		}, 1 * 1000); //perhaps change the 1 to a variable to adjust the time of the boost
+	}
 	// Is the hero Touching the Green Goblin?
 	if (
 		_hero.x <= (_greenGoblin.x + 32)
@@ -140,6 +175,10 @@ var _update = function (modifier) {
 		&& _greenGoblin.y <= (_hero.y + 32)
 	) {
 		++_goblinsCaught;
+		//if the player has used the bloodlust speed boost, increase the bloodLustpoints
+		if (_bloodLust == false){++_bloodLustPoints}
+		//if the player has used the bloodlust speed boost and has accumulated the necessary bloodlust points, gain bloodlust again
+		if (_bloodLust == false && _bloodLustPoints == 5){_bloodLust = true;_bloodLustPoints = 0} 
 		_pointsTotal += _pointsGreenGoblin;
 		_greenGoblinCaught = true;
 		//when a green goblin is caught, randomly make the Blue One Appear
@@ -193,18 +232,31 @@ var _render = function () {
 			_ctx.drawImage(_blueGoblinImage, _blueGoblin.x, _blueGoblin.y);}
 		
 	}
-
+	if (_bloodLust){
+		if (_bloodLustFullReady) {
+		_ctx.drawImage(_bloodLustFullImage, 50, 0);
+		}
+	}
+	if (_bloodLust == false){
+		if (_bloodLustEmptyReady) {
+		_ctx.drawImage(_bloodLustEmptyImage, 50, 0);
+		}
+	}	
+	if (_scoreReady) {
+		_ctx.drawImage(_scoreImage, 400, 0);
+	}
+	
 	// Score
-	_ctx.fillStyle = "rgb(250, 250, 250)";
-	_ctx.font = "24px Helvetica";
+	_ctx.fillStyle = "rgb(255, 216, 0)";
+	_ctx.font = "38px Harrington";
 	_ctx.textAlign = "left";
 	_ctx.textBaseline = "top";
 	_ctx.shadowColor = "black";
 	_ctx.shadowOffsetX = 3;
     _ctx.shadowOffsetY = 3;
-	_ctx.shadowBlur = 4;
+	_ctx.shadowBlur = 10;
 	//_ctx.fillText("Goblins caught: " + _greenGoblinsCaught, 50, 5); OLD display of monsters caught
-	_ctx.fillText("SCORE: "+_pointsTotal + " pts", 450, 5);
+	_ctx.fillText(_pointsTotal + " pts", 510, -5);
 	
 	//If a goblin was caught, display the points gained
 	if (_blueGoblinCaught == true){

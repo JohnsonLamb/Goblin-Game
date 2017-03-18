@@ -23,3 +23,7 @@ The Final Game should look like this:
 - Blue give more points but have a timer
 
 - Red give take away 1 life (and possibly chase the player if I can implement it)
+
+- Once the player slays enough Green Goblins he can activate bloodlust to get a short burst of speed.
+
+Read Dev Notes for details on the Development
