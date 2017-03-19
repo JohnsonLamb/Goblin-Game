@@ -10,20 +10,6 @@ DONE:
 
 - Made it so that when the player catches the goblin, the position of the hero does not reset.
 
-TO DO:
-
-- Make invisible walls on the edges (bushes)
-
-- The goblins can't spawn in the edges
-
-- Instead of "number of monsters caught" have a "score"
-
-- When the player catches a Goblin, display the score obtained above the goblin (like floating combat text in WoW)
-
-- Spawn a blue goblin with a timer. (starts flashing when timer is running out)
-
-- Spawn a Red goblin that moves towards the player and is also timed.
-
 --17-03-2017--
 
 DONE:
@@ -40,13 +26,6 @@ DONE:
 
 - Added a floating text above the Blue Goblins when they are caught.
 
-TO DO:
-
-- Spawn a Red goblin that moves towards the player and is also timed. If the red Goblin hits the player, a live is lost.
-
-- Add a Hearts System representing the number of lives (3 lives seems reasonable)
-
-- [Maybe] Make a timer for the green goblins. The faster they are caught the higher the points down to the default 5 points.
 
 --18-03-2017--
 
@@ -68,3 +47,17 @@ DONE:
 
 - Prevented Scrolling with the arrowkeys. (In smaller screens the page scrolls up and down with the player's inputs)
 	- Initially this prevented F5 from being used, it's fixed 	now
+
+--19-03-2017--
+
+- Added a Red Goblin that has a small chance to spawn when a green goblin is caught.
+
+- Made the red Goblin chase the hero
+
+- Added lives system. Hero has 3 lives. 
+
+- When red goblin touches the player, 1 life is lost
+
+- Added the art to represent the lives
+
+- Added the art to represent Game Over

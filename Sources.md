@@ -12,3 +12,6 @@ http://www.computer-hardware-explained.com/computer-keyboard-layout.html
 
 Red Goblin
 http://www.illmosis.net/art.php?art=sprites-redarremer
+
+Heart
+http://steeleagle1.deviantart.com/art/Isaac-s-Heart-Pixel-Art-530018296

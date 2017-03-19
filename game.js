@@ -96,8 +96,45 @@ _bloodLustFullImage.onload = function () {
 };
 _bloodLustFullImage.src = "images/BloodlustFULL.png";
 
+//lives 3
+var _lives3Ready = false;
+var _lives3Image = new Image();
+_lives3Image.onload = function () {
+	_lives3Ready = true;
+};
+_lives3Image.src = "images/lives3.png";
 
+//lives 2
+var _lives2Ready = false;
+var _lives2Image = new Image();
+_lives2Image.onload = function () {
+	_lives2Ready = true;
+};
+_lives2Image.src = "images/lives2.png";
 
+//lives 1
+var _lives1Ready = false;
+var _lives1Image = new Image();
+_lives1Image.onload = function () {
+	_lives1Ready = true;
+};
+_lives1Image.src = "images/lives1.png";
+
+//lives 0
+var _lives0Ready = false;
+var _lives0Image = new Image();
+_lives0Image.onload = function () {
+	_lives0Ready = true;
+};
+_lives0Image.src = "images/lives0.png";
+
+//Game Over
+var _gameOverReady = false;
+var _gameOverImage = new Image();
+_gameOverImage.onload = function () {
+	_gameOverReady = true;
+};
+_gameOverImage.src = "images/gameover.png";
 //Score
 var _scoreReady = false;
 var _scoreImage = new Image();
@@ -110,6 +147,7 @@ _scoreImage.src = "images/Score.png";
 var _hero = {
 	speed: 256, // movement in pixels per second
 	speedBuff: 30,
+	lives: 3,
 	x: 0,
 	y: 0
 };
@@ -123,7 +161,7 @@ var _blueGoblin = {
 };
 
 var _redGoblin = {
-	speed: 260,
+	speed: 250,
 	x: 0,
 	y: 0
 }
@@ -144,9 +182,18 @@ var _blueGoblinTimeout = 1.5; //variable to control the amount of time the BlueG
 var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
 var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spawns
 var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
-var _blueGoblinCatchPoints = 0;
+var _blueGoblinCatchPoints = 0; //NOT IN USE
+
 var _bloodLust = false; //variable to control the speed boost funtion
 var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
+
+var _redGoblinTouched = false; //varuiable to control if the blue red Goblin is touched
+var _redGoblinAppeared = false; // variable to control the appearance of the red goblin
+var _redGoblinAppChance = 0.25; //variable to control the probablity of appearance of the red Goblin
+var _redGoblinTimeout = 1.5; //variable to control the amount of time the RedGoblin stays alive
+var _redGoblinTimerControl; //varibale used to control the SetTimeOut on the red goblin
+var _redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
+
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -186,10 +233,11 @@ var reset = function () {
 	if (_blueGoblinCaught == true || _goblinsCaught == 0){
 		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
-		/*
+	}
+	if (_redGoblinTouched == true || _goblinsCaught == 0){	
 		//throw the redGoblin somewhere in the screen randomly
 		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
-		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));*/
+		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
 	}
 };
 
@@ -210,7 +258,13 @@ var _update = function (modifier) {
 	if (39 in _keysDown && _hero.x<615) { // Player holding right
 		_hero.x += _hero.speed * modifier;
 	}
-
+	
+	// red Goblin Movement towards the player
+	if (_redGoblin.x < _hero.x){_redGoblin.x += _redGoblin.speed * modifier}
+	if (_redGoblin.x > _hero.x){_redGoblin.x -= _redGoblin.speed * modifier}
+	if (_redGoblin.y <_hero.y){_redGoblin.y += _redGoblin.speed * modifier}
+	if (_redGoblin.y >_hero.y){_redGoblin.y -= _redGoblin.speed * modifier}
+	
 	//Speed boost when pressing Space BLOODLUST
 	//when the player presses the SPACE key, the Hero gets a speed boost for 1 sec
 	if (32 in _keysDown && _bloodLust == true){
@@ -244,6 +298,14 @@ var _update = function (modifier) {
 		}, _blueGoblinTimeout * 1000);
 		_blueGoblinStartTime = new Date();
 		}
+		//when a green goblin is caught, randomly make the Red One Appear
+		if (Math.random()<_redGoblinAppChance && _redGoblinAppeared == false){
+		_redGoblinAppeared = true;
+		_redGoblinTimerControl = setTimeout(function() {
+			_redGoblinAppeared = false;
+			
+		}, _redGoblinTimeout * 1000);
+		}
 		reset();
 	}
 	//is the hero touching the Blue Goblin?
@@ -263,6 +325,20 @@ var _update = function (modifier) {
 		_blueGoblinCaughtXY = [_blueGoblin.x,_blueGoblin.y]; //registers where the blue goblin was caught to show the points
 		_blueGoblinAppeared = false;
 		clearTimeout(_blueGoblinTimerControl);
+		reset();
+	} 
+	//is the hero touching the red goblin
+	if ( _redGoblinAppeared == true &&
+		_hero.x <= (_redGoblin.x + 32)
+		&& _redGoblin.x <= (_hero.x + 32)
+		&& _hero.y <= (_redGoblin.y + 32)
+		&& _redGoblin.y <= (_hero.y + 32)
+	) {
+		--_hero.lives;
+		_redGoblinTouched = true;
+		_redGoblinCaughtXY = [_redGoblin.x,_redGoblin.y]; //registers where the red goblin was touched
+		_redGoblinAppeared = false;
+		clearTimeout(_redGoblinTimerControl);
 		reset();
 	} 
 };
@@ -286,18 +362,46 @@ var _render = function () {
 			_ctx.drawImage(_blueGoblinImage, _blueGoblin.x, _blueGoblin.y);}
 		
 	}
-	/*
+	
 	if (_redGoblinReady) {
-			if (_blueGoblinAppeared == true){
+			if (_redGoblinAppeared == true){
 			_ctx.drawImage(_redGoblinImage, _redGoblin.x, _redGoblin.y);}
 		
-	}*/
+	}
 	
 	if (_bloodLust){
 		if (_bloodLustFullReady) {
 		_ctx.drawImage(_bloodLustFullImage, 50, 0);
 		}
 	}
+	if (_hero.lives == 0){
+		if (_gameOverReady) {
+			_ctx.drawImage(_gameOverImage, 185, 200);
+		}
+	}
+	switch(_hero.lives){
+		case 3:
+			if (_lives3Ready) {
+					_ctx.drawImage(_lives3Image, 50, 430);
+			}
+			break;
+		case 2:
+			if (_lives2Ready) {
+					_ctx.drawImage(_lives2Image, 50, 430);
+			}
+			break;
+		case 1:
+			if (_lives1Ready) {
+					_ctx.drawImage(_lives1Image, 50, 430);
+			}
+			break;
+		case 0:
+			if (_lives0Ready) {
+					_ctx.drawImage(_lives0Image, 50, 430);
+			}
+			break;
+	}
+	
 	if (_bloodLust == false){
 		switch (_bloodLustPoints){
 			case 0:
@@ -372,7 +476,8 @@ var main = function () {
 	then = now;
 
 	// Request to do this again ASAP
-	requestAnimationFrame(main);
+	if (_hero.lives != 0){
+	requestAnimationFrame(main);}else{ _render()}
 };
 
 // Cross-browser support for requestAnimationFrame
