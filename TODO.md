@@ -19,6 +19,8 @@ TO DO:
 
 - Make the Red Goblin spawn away from the Player
 
+- Add a restart button after the game over. (needs a reset function to reset the variables)
+
 - [Maybe] Make a timer for the green goblins. The faster they are caught the higher the points down to the default 5 points.
 
 
