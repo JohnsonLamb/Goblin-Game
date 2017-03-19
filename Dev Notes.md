@@ -61,3 +61,7 @@ DONE:
 - Added the art to represent the lives
 
 - Added the art to represent Game Over
+
+- Fixed the reappearing of the red and blue goblin when a green one is caught. (they were already on the screen and after touching a green goblin they would suddenly change places)
+
+- Toned down the speed of the Red Goblin

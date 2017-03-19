@@ -15,7 +15,7 @@ TO DO:
 
 - Add a Hearts System representing the number of lives (3 lives seems reasonable) DONE[19-03-2017]
 
-- When the a green goblin is caught while a blue or red are present, the blue and red reset. Investigate why and fix it so it does not happen.
+- When the a green goblin is caught while a blue or red are present, the blue and red reset. Investigate why and fix it so it does not happen. DONE[19-03-2017]
 
 - Make the Red Goblin spawn away from the Player
 

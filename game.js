@@ -161,7 +161,7 @@ var _blueGoblin = {
 };
 
 var _redGoblin = {
-	speed: 250,
+	speed: 180,
 	x: 0,
 	y: 0
 }
@@ -230,11 +230,11 @@ var reset = function () {
 		_greenGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64)); 
 	}
 	//Throw the Blue goblin somewhere on screen randomly
-	if (_blueGoblinCaught == true || _goblinsCaught == 0){
+	if (_blueGoblinCaught == true || _blueGoblinAppeared == false){
 		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
 	}
-	if (_redGoblinTouched == true || _goblinsCaught == 0){	
+	if (_redGoblinTouched == true && _redGoblinAppeared == false){	
 		//throw the redGoblin somewhere in the screen randomly
 		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
@@ -258,13 +258,39 @@ var _update = function (modifier) {
 	if (39 in _keysDown && _hero.x<615) { // Player holding right
 		_hero.x += _hero.speed * modifier;
 	}
-	
 	// red Goblin Movement towards the player
-	if (_redGoblin.x < _hero.x){_redGoblin.x += _redGoblin.speed * modifier}
-	if (_redGoblin.x > _hero.x){_redGoblin.x -= _redGoblin.speed * modifier}
-	if (_redGoblin.y <_hero.y){_redGoblin.y += _redGoblin.speed * modifier}
-	if (_redGoblin.y >_hero.y){_redGoblin.y -= _redGoblin.speed * modifier}
 	
+	if (_redGoblin.x < _hero.x){
+		_redGoblin.x += _redGoblin.speed * modifier
+		}
+	if (_redGoblin.x > _hero.x){
+		_redGoblin.x -= _redGoblin.speed * modifier
+		}
+	if (_redGoblin.y <_hero.y){
+		_redGoblin.y += _redGoblin.speed * modifier
+		}
+	if (_redGoblin.y >_hero.y){
+		_redGoblin.y -= _redGoblin.speed * modifier
+	}
+	/*
+	Tryoing to give the Goblin a delay but it does not appear smooth
+	if (_redGoblin.x < _hero.x){
+		setTimeout(function() {
+			_redGoblin.x += _redGoblin.speed * modifier;},50)
+		}
+	if (_redGoblin.x > _hero.x){
+		setTimeout(function() {
+			_redGoblin.x -= _redGoblin.speed * modifier;},50)
+		}
+	if (_redGoblin.y <_hero.y){
+		setTimeout(function() {
+		 _redGoblin.y += _redGoblin.speed * modifier;},50)
+		}
+	if (_redGoblin.y >_hero.y){
+		setTimeout(function() {
+		_redGoblin.y -= _redGoblin.speed * modifier},50)
+		}
+	*/
 	//Speed boost when pressing Space BLOODLUST
 	//when the player presses the SPACE key, the Hero gets a speed boost for 1 sec
 	if (32 in _keysDown && _bloodLust == true){
