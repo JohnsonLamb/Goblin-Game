@@ -367,6 +367,31 @@ var reset = function () {
 			_redGoblinAppeared = false;
 			
 		}, _redGoblinTimeout * 1000);
+		var Quad = checkQuandrant(_hero.x,_hero.y).q;
+		if (Quad == "Q11"){
+			//the goblin can spawn in the following quandrants: Q22, Q24, Q42, Q44, Q43, Q34, Q33
+		}
+		if (Quad == "Q22"){
+			//the goblin can spawn in the following quandrants: Q33, Q34, Q43, Q44, Q31, Q13, Q11
+		}
+		if (Quad == "Q33"){
+			//the goblin can spawn in the following quandrants: Q11, Q12, Q21 Q22, Q24, Q42, Q44
+		}
+		if (Quad == "Q44"){
+			//the goblin can spawn in the following quandrants: Q33, Q31, Q13, Q11, Q12, Q21, Q22
+		}
+		if (Quad == "Q12"  || Quad == "Q21"){
+			//the goblin can spawn in the following quandrants: Q33, Q34, Q43, Q44
+		}
+		if (Quad == "Q13" || Quad == "Q31" || Quad == "Q14" || Quad == "Q32"){
+			//the goblin can spawn in the following quandrants: Q22, Q24, Q42, Q44
+		}
+		if (Quad == "Q23" || Quad == "Q24" || Quad == "Q42" || Quad == "Q41"){
+			//the goblin can spawn in the following quandrants: Q11, Q13, Q31, Q33
+		}
+		if (Quad == "Q34" || Quad == "Q43"){
+			//the goblin can spawn in the following quandrants: Q11, Q12, Q21, Q22
+		}
 		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
 		_redGoblinGoodSpawn = true;
