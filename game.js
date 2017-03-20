@@ -166,6 +166,98 @@ var _redGoblin = {
 	y: 0
 }
 
+//Map quadrants
+
+var Q11 ={
+	x: 50,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q12 ={
+	x: 195,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q13 ={
+	x: 50,
+	y: 145,
+	h: 95,
+	w: 145
+}
+var Q14 ={
+	x: 195,
+	y: 145,
+	h: 95,
+	w: 145
+}
+var Q21 ={
+	x: 340,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q22 ={
+	x: 485,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q23 ={
+	x: 340,
+	y: 145,
+	h: 95,
+	w: 145
+}
+var Q24 ={
+	x: 485,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q31 ={
+	x: 50,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q32 ={
+	x: 195,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q33 ={
+	x: 50,
+	y: 335,
+	h: 95,
+	w: 145
+}
+var Q41 ={
+	x: 340,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q42 ={
+	x: 485,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q43 ={
+	x: 340,
+	y: 335,
+	h: 95,
+	w: 145
+}
+var Q44 ={
+	x: 485,
+	y: 335,
+	h: 95,
+	w: 145
+}
 // Game Score
 var _goblinsCaught = 0; // total goblins caught
 var _pointsGreenGoblin = 5;
@@ -183,17 +275,18 @@ var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the bl
 var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spawns
 var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
 var _blueGoblinCatchPoints = 0; //NOT IN USE
+var _blueGoblinGoodSpawn = false;
 
 var _bloodLust = false; //variable to control the speed boost funtion
 var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
 
 var _redGoblinTouched = false; //varuiable to control if the blue red Goblin is touched
 var _redGoblinAppeared = false; // variable to control the appearance of the red goblin
-var _redGoblinAppChance = 0.25; //variable to control the probablity of appearance of the red Goblin
+var _redGoblinAppChance = 0.20; //variable to control the probablity of appearance of the red Goblin
 var _redGoblinTimeout = 1.5; //variable to control the amount of time the RedGoblin stays alive
 var _redGoblinTimerControl; //varibale used to control the SetTimeOut on the red goblin
 var _redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
-
+var _redGoblinGoodSpawn = false //variable to control if the red goblin has a good place to spawn
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -230,17 +323,38 @@ var reset = function () {
 		_greenGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64)); 
 	}
 	//Throw the Blue goblin somewhere on screen randomly
-	if (_blueGoblinCaught == true || _blueGoblinAppeared == false){
+	if (_greenGoblinCaught == true && _blueGoblinAppeared == false){
 		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
+		_blueGoblinGoodSpawn = true;
 	}
-	if (_redGoblinTouched == true && _redGoblinAppeared == false){	
+	if (_greenGoblinCaught == true && _redGoblinAppeared == false){	
 		//throw the redGoblin somewhere in the screen randomly
 		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
+		_redGoblinGoodSpawn = true;
+		//console.log(checkQuandrant(_hero.x,_hero.y));
+		
 	}
+		//tried using a while loop but it would occasionaly cause the game to freeze. 
+		//need a different method to spawn the red goblin away from the player
+		/*while (_redGoblinGoodSpawn == false){
+			var auxX = 32 + (Math.random() * ((_canvas.width-50) - 64));
+			var auxY = 32 + (Math.random() * ((_canvas.height-50) - 64));
+			if (((auxX > _hero.x+300)||(auxX < _hero.x-300))&&((auxY > _hero.y+300)||(auxX < _hero.y-300))){
+				_redGoblin.x = auxX;
+				_redGoblin.y = auxY;
+				_redGoblinGoodSpawn = true;
+			}
+		}*/
+	
 };
-
+function checkQuandrant(x,y){
+	if (x <= Q12.x && y <=Q13.y){return Q11}
+	if (x > Q12.x && x <= Q21.x && y <= Q13.y){return Q12}
+	if (x > Q21.x && x <= Q22.x && y <= Q13.y){return Q21}
+	if (x > Q22.x && y<= Q13.y){return Q22}
+}
 // Update game objects
 //the modifier variable is used to control the speed in which the Hero moves indepently of the speed the script is executed
 var _update = function (modifier) {
@@ -336,6 +450,7 @@ var _update = function (modifier) {
 	}
 	//is the hero touching the Blue Goblin?
 	if ( _blueGoblinAppeared == true &&
+		_blueGoblinGoodSpawn == true &&
 		_hero.x <= (_blueGoblin.x + 32)
 		&& _blueGoblin.x <= (_hero.x + 32)
 		&& _hero.y <= (_blueGoblin.y + 32)
@@ -355,6 +470,7 @@ var _update = function (modifier) {
 	} 
 	//is the hero touching the red goblin
 	if ( _redGoblinAppeared == true &&
+		_redGoblinGoodSpawn == true &&
 		_hero.x <= (_redGoblin.x + 32)
 		&& _redGoblin.x <= (_hero.x + 32)
 		&& _hero.y <= (_redGoblin.y + 32)
@@ -383,13 +499,13 @@ var _render = function () {
 		_ctx.drawImage(_greenGoblinImage, _greenGoblin.x, _greenGoblin.y);
 	}
 	
-	if (_blueGoblinReady) {
+	if (_blueGoblinReady && _blueGoblinGoodSpawn) {
 			if (_blueGoblinAppeared == true){
 			_ctx.drawImage(_blueGoblinImage, _blueGoblin.x, _blueGoblin.y);}
 		
 	}
 	
-	if (_redGoblinReady) {
+	if (_redGoblinReady && _redGoblinGoodSpawn) {
 			if (_redGoblinAppeared == true){
 			_ctx.drawImage(_redGoblinImage, _redGoblin.x, _redGoblin.y);}
 		
