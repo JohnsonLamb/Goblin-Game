@@ -169,90 +169,112 @@ var _redGoblin = {
 //Map quadrants
 
 var Q11 ={
+	q: "Q11",
 	x: 50,
 	y: 50,
 	h: 95,
 	w: 145
 }
 var Q12 ={
+	q: "Q12",
 	x: 195,
 	y: 50,
 	h: 95,
 	w: 145
 }
 var Q13 ={
+	q: "Q13",
 	x: 50,
 	y: 145,
 	h: 95,
 	w: 145
 }
 var Q14 ={
+	q: "Q14",
 	x: 195,
 	y: 145,
 	h: 95,
 	w: 145
 }
 var Q21 ={
+	q: "Q21",
 	x: 340,
 	y: 50,
 	h: 95,
 	w: 145
 }
 var Q22 ={
+	q: "Q22",
 	x: 485,
 	y: 50,
 	h: 95,
 	w: 145
 }
 var Q23 ={
+	q: "Q23",
 	x: 340,
 	y: 145,
 	h: 95,
 	w: 145
 }
 var Q24 ={
+	q: "Q24",
 	x: 485,
 	y: 50,
 	h: 95,
 	w: 145
 }
 var Q31 ={
+	q: "Q31",
 	x: 50,
 	y: 240,
 	h: 95,
 	w: 145
 }
 var Q32 ={
+	q: "Q32",
 	x: 195,
 	y: 240,
 	h: 95,
 	w: 145
 }
 var Q33 ={
+	q: "Q33",
 	x: 50,
 	y: 335,
 	h: 95,
 	w: 145
 }
+var Q34 ={
+	q: "Q34",
+	x: 195,
+	y: 335,
+	h: 95,
+	w: 145
+}
 var Q41 ={
+	q: "Q41",
 	x: 340,
 	y: 240,
 	h: 95,
 	w: 145
 }
 var Q42 ={
+	q: "Q42",
 	x: 485,
 	y: 240,
 	h: 95,
 	w: 145
 }
 var Q43 ={
+	q: "Q43",
 	x: 340,
 	y: 335,
 	h: 95,
 	w: 145
 }
 var Q44 ={
+	q: "Q44",
 	x: 485,
 	y: 335,
 	h: 95,
@@ -324,18 +346,34 @@ var reset = function () {
 	}
 	//Throw the Blue goblin somewhere on screen randomly
 	if (_greenGoblinCaught == true && _blueGoblinAppeared == false){
+		if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
+		_blueGoblinAppeared = true;
+		_blueGoblinTimerControl = setTimeout(function() {
+			_blueGoblinAppeared = false;
+			
+		}, _blueGoblinTimeout * 1000);
+		_blueGoblinStartTime = new Date();
 		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
 		_blueGoblinGoodSpawn = true;
+		}
+		
 	}
 	if (_greenGoblinCaught == true && _redGoblinAppeared == false){	
 		//throw the redGoblin somewhere in the screen randomly
+		if (Math.random()<_redGoblinAppChance && _redGoblinAppeared == false){
+		_redGoblinAppeared = true;
+		_redGoblinTimerControl = setTimeout(function() {
+			_redGoblinAppeared = false;
+			
+		}, _redGoblinTimeout * 1000);
 		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
 		_redGoblinGoodSpawn = true;
-		//console.log(checkQuandrant(_hero.x,_hero.y));
-		
+		}
+		console.log(checkQuandrant(_hero.x,_hero.y).q);
 	}
+
 		//tried using a while loop but it would occasionaly cause the game to freeze. 
 		//need a different method to spawn the red goblin away from the player
 		/*while (_redGoblinGoodSpawn == false){
@@ -354,6 +392,18 @@ function checkQuandrant(x,y){
 	if (x > Q12.x && x <= Q21.x && y <= Q13.y){return Q12}
 	if (x > Q21.x && x <= Q22.x && y <= Q13.y){return Q21}
 	if (x > Q22.x && y<= Q13.y){return Q22}
+	if (x <= Q14.x && y <= Q31.y && y >= Q13.y){return Q13}
+	if (x > Q14.x && x <= Q23.x && y <= Q31.y && y >= Q13.y){return Q14}
+	if (x > Q23.x && x <= Q24.x && y <= Q31.y && y >= Q13.y){return Q23}
+	if (x > Q24.x && y <= Q31.y && y >= Q13.y){return Q24}
+	if (x <= Q32.x && y <= Q33.y && y >= Q31.y){return Q31}
+	if (x > Q32.x && x <= Q41.x && y <= Q33.y && y >= Q31.y){return Q32}
+	if (x > Q41.x && x <= Q42.x && y <= Q33.y && y >= Q31.y){return Q41}
+	if (x > Q42.x && y <= Q33.y && y >= Q31.y){return Q42}
+	if (x > Q33.x && x <= Q34.x && y >= Q33.y){return Q33}
+	if (x > Q34.x && x <= Q43.x && y >= Q33.y){return Q34}
+	if (x > Q43.x && x <= Q44.x && y >= Q33.y){return Q43}
+	if (x > Q44.x && y >= Q33.y){return Q44}
 }
 // Update game objects
 //the modifier variable is used to control the speed in which the Hero moves indepently of the speed the script is executed
@@ -430,22 +480,22 @@ var _update = function (modifier) {
 		_pointsTotal += _pointsGreenGoblin;
 		_greenGoblinCaught = true;
 		//when a green goblin is caught, randomly make the Blue One Appear
-		if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
+		/*if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
 		_blueGoblinAppeared = true;
 		_blueGoblinTimerControl = setTimeout(function() {
 			_blueGoblinAppeared = false;
 			
 		}, _blueGoblinTimeout * 1000);
 		_blueGoblinStartTime = new Date();
-		}
+		}*/
 		//when a green goblin is caught, randomly make the Red One Appear
-		if (Math.random()<_redGoblinAppChance && _redGoblinAppeared == false){
+		/*if (Math.random()<_redGoblinAppChance && _redGoblinAppeared == false){
 		_redGoblinAppeared = true;
 		_redGoblinTimerControl = setTimeout(function() {
 			_redGoblinAppeared = false;
 			
 		}, _redGoblinTimeout * 1000);
-		}
+		}*/
 		reset();
 	}
 	//is the hero touching the Blue Goblin?
