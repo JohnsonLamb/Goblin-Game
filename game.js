@@ -142,6 +142,20 @@ _scoreImage.onload = function () {
 	_scoreReady = true;
 };
 _scoreImage.src = "images/Score.png";
+//Restart
+var _restartReady = false;
+var _restartImage = new Image();
+_restartImage.onload = function () {
+	_restartReady = true;
+};
+_restartImage.src = "images/restart.png";
+//Restart Selected
+var _restartSelectedReady = false;
+var _restartSelectedImage = new Image();
+_restartSelectedImage.onload = function () {
+	_restartSelectedReady = true;
+};
+_restartSelectedImage.src = "images/restartSelected.png";
 
 // Game objects
 var _hero = {
@@ -292,7 +306,7 @@ var _blueGoblinCaught = false; //varuiable to control if the blue goblin is caug
 var _blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
 var _blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
 var _blueGoblinAppChance = 0.3; //variable to control the probablity of appearance of the blue Goblin
-var _blueGoblinTimeout = 1.5; //variable to control the amount of time the BlueGoblin stays alive
+var _blueGoblinTimeout = 2; //variable to control the amount of time the BlueGoblin stays alive
 var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
 var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spawns
 var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
@@ -304,8 +318,8 @@ var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
 
 var _redGoblinTouched = false; //varuiable to control if the blue red Goblin is touched
 var _redGoblinAppeared = false; // variable to control the appearance of the red goblin
-var _redGoblinAppChance = 0.20; //variable to control the probablity of appearance of the red Goblin
-var _redGoblinTimeout = 1.5; //variable to control the amount of time the RedGoblin stays alive
+var _redGoblinAppChance = 0.28; //variable to control the probablity of appearance of the red Goblin
+var _redGoblinTimeout = 2.5; //variable to control the amount of time the RedGoblin stays alive
 var _redGoblinTimerControl; //varibale used to control the SetTimeOut on the red goblin
 var _redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
 var _redGoblinGoodSpawn = false //variable to control if the red goblin has a good place to spawn
@@ -330,6 +344,9 @@ addEventListener("keyup", function (e) {
 //New Game
 // Reset the game when the player catches a monster
 var reset = function () {
+	var Quad = checkQuandrant(_hero.x,_hero.y).q; //local variable to hold the Quandrant where the hero is located
+	var RedQuadSpawn = Q11; //local varibale to store the quadrant where the red goblin will spawn 
+	var Rand = Math.random(); // Local variable to store the random number calculation (this calculation is done only once)
 	
 	if (_goblinsCaught == 0){
 	_hero.x = _canvas.width / 2;
@@ -367,36 +384,94 @@ var reset = function () {
 			_redGoblinAppeared = false;
 			
 		}, _redGoblinTimeout * 1000);
-		var Quad = checkQuandrant(_hero.x,_hero.y).q;
+		
 		if (Quad == "Q11"){
 			//the goblin can spawn in the following quandrants: Q22, Q24, Q42, Q44, Q43, Q34, Q33
+			//There are a total of 7 quandrants that the red Goblin can appear
+			//the Math.random will be used to decide which quadrants by dividing the interval [0-1] into 7 equal parts 
+			if (Rand <= 0.1429){RedQuadSpawn = Q22}
+			if (Rand > 0.1429 && Rand <= 0.2848){RedQuadSpawn = Q24}
+			if (Rand > 0.2848 && Rand <= 0.4287){RedQuadSpawn = Q42}
+			if (Rand > 0.4287 && Rand <= 0.5716){RedQuadSpawn = Q44}
+			if (Rand > 0.5716 && Rand <= 0.7145){RedQuadSpawn = Q43}
+			if (Rand > 0.7145 && Rand <= 0.8574){RedQuadSpawn = Q34}
+			if (Rand > 0.8574 ){RedQuadSpawn = Q33}
 		}
 		if (Quad == "Q22"){
 			//the goblin can spawn in the following quandrants: Q33, Q34, Q43, Q44, Q31, Q13, Q11
+			//There are a total of 7 quandrants that the red Goblin can appear
+			if (Rand <= 0.1429){RedQuadSpawn = Q33}
+			if (Rand > 0.1429 && Rand <= 0.2848){RedQuadSpawn = Q34}
+			if (Rand > 0.2848 && Rand <= 0.4287){RedQuadSpawn = Q43}
+			if (Rand > 0.4287 && Rand <= 0.5716){RedQuadSpawn = Q44}
+			if (Rand > 0.5716 && Rand <= 0.7145){RedQuadSpawn = Q31}
+			if (Rand > 0.7145 && Rand <= 0.8574){RedQuadSpawn = Q13}
+			if (Rand > 0.8574 ){RedQuadSpawn = Q11}
 		}
 		if (Quad == "Q33"){
 			//the goblin can spawn in the following quandrants: Q11, Q12, Q21 Q22, Q24, Q42, Q44
+			//There are a total of 7 quandrants that the red Goblin can appear
+			if (Rand <= 0.1429){RedQuadSpawn = Q11}
+			if (Rand > 0.1429 && Rand <= 0.2848){RedQuadSpawn = Q12}
+			if (Rand > 0.2848 && Rand <= 0.4287){RedQuadSpawn = Q21}
+			if (Rand > 0.4287 && Rand <= 0.5716){RedQuadSpawn = Q22}
+			if (Rand > 0.5716 && Rand <= 0.7145){RedQuadSpawn = Q24}
+			if (Rand > 0.7145 && Rand <= 0.8574){RedQuadSpawn = Q42}
+			if (Rand > 0.8574){RedQuadSpawn = Q44}
 		}
 		if (Quad == "Q44"){
 			//the goblin can spawn in the following quandrants: Q33, Q31, Q13, Q11, Q12, Q21, Q22
+			//There are a total of 7 quandrants that the red Goblin can appear
+			if (Rand <= 0.1429){RedQuadSpawn = Q33}
+			if (Rand > 0.1429 && Rand <= 0.2848){RedQuadSpawn = Q31}
+			if (Rand > 0.2848 && Rand <= 0.4287){RedQuadSpawn = Q13}
+			if (Rand > 0.4287 && Rand <= 0.5716){RedQuadSpawn = Q11}
+			if (Rand > 0.5716 && Rand <= 0.7145){RedQuadSpawn = Q12}
+			if (Rand > 0.7145 && Rand <= 0.8574){RedQuadSpawn = Q21}
+			if (Rand > 0.8574){RedQuadSpawn = Q22}
 		}
 		if (Quad == "Q12"  || Quad == "Q21"){
 			//the goblin can spawn in the following quandrants: Q33, Q34, Q43, Q44
+			//There are a total of 4 quandrants that the red Goblin can appear
+			if (Rand <= 0.25){RedQuadSpawn = Q33}
+			if (Rand > 0.25 && Rand <= 0.50){RedQuadSpawn = Q34}
+			if (Rand > 0.50 && Rand <= 0.75){RedQuadSpawn = Q43}
+			if (Rand > 0.75){RedQuadSpawn = Q44}
 		}
 		if (Quad == "Q13" || Quad == "Q31" || Quad == "Q14" || Quad == "Q32"){
 			//the goblin can spawn in the following quandrants: Q22, Q24, Q42, Q44
+			//There are a total of 4 quandrants that the red Goblin can appear
+			if (Rand <= 0.25){RedQuadSpawn = Q22}
+			if (Rand > 0.25 && Rand <= 0.50){RedQuadSpawn = Q24}
+			if (Rand > 0.50 && Rand <= 0.75){RedQuadSpawn = Q42}
+			if (Rand > 0.75){RedQuadSpawn = Q44}
 		}
 		if (Quad == "Q23" || Quad == "Q24" || Quad == "Q42" || Quad == "Q41"){
 			//the goblin can spawn in the following quandrants: Q11, Q13, Q31, Q33
+			//There are a total of 4 quandrants that the red Goblin can appear
+			if (Rand <= 0.25){RedQuadSpawn = Q11}
+			if (Rand > 0.25 && Rand <= 0.50){RedQuadSpawn = Q13}
+			if (Rand > 0.50 && Rand <= 0.75){RedQuadSpawn = Q31}
+			if (Rand > 0.75){RedQuadSpawn = Q33}
 		}
 		if (Quad == "Q34" || Quad == "Q43"){
 			//the goblin can spawn in the following quandrants: Q11, Q12, Q21, Q22
+			//There are a total of 4 quandrants that the red Goblin can appear
+			if (Rand <= 0.25){RedQuadSpawn = Q11}
+			if (Rand > 0.25 && Rand <= 0.50){RedQuadSpawn = Q12}
+			if (Rand > 0.50 && Rand <= 0.75){RedQuadSpawn = Q21}
+			if (Rand > 0.75){RedQuadSpawn = Q22}
 		}
+		_redGoblin.x = RedQuadSpawn.x + (Math.random() * RedQuadSpawn.w);
+		_redGoblin.y = RedQuadSpawn.y + (Math.random() * RedQuadSpawn.h);
+		_redGoblinGoodSpawn = true;
+		/*
 		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
-		_redGoblinGoodSpawn = true;
+		_redGoblinGoodSpawn = true;*/
 		}
-		console.log(checkQuandrant(_hero.x,_hero.y).q);
+		//console.log(RedQuadSpawn.q);
+		
 	}
 
 		//tried using a while loop but it would occasionaly cause the game to freeze. 
@@ -595,6 +670,10 @@ var _render = function () {
 		if (_gameOverReady) {
 			_ctx.drawImage(_gameOverImage, 185, 200);
 		}
+		if (_restartReady){
+			_ctx.drawImage(_restartImage, 290,270);
+		}
+		
 	}
 	switch(_hero.lives){
 		case 3:
@@ -706,3 +785,91 @@ var then = Date.now();
 reset();
 main();
 
+
+// RESET BUTTON Functions
+var _restartSelected = false; //variable to be control what color of the Reset text to display based on weather the mouse is over the text or not
+//function to reset all the variables before starting new game
+function clearAll(){
+	_restartSelected = false;
+	_hero.lives = 3;
+	_goblinsCaught = 0; // total goblins caught
+
+	_pointsBlueGoblinTime = 0; //variable to hold the time dependent points the player gets for catching the Blue Goblin
+	_pointsTotal = 0;
+	_greenGoblinCaught = false; //varibale to control if the green goblin is caught
+	_blueGoblinCaught = false; //varuiable to control if the blue goblin is caught
+	_blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
+	_blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
+	_blueGoblinGoodSpawn = false;
+
+	_bloodLust = false; //variable to control the speed boost funtion
+	_bloodLustPoints = 0; //varibale to control when bloodlust comes into play
+
+	_redGoblinTouched = false; //varuiable to control if the blue red Goblin is touched
+	_redGoblinAppeared = false; // variable to control the appearance of the red goblin
+	_redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
+	_redGoblinGoodSpawn = false //variable to control if the red goblin has a good place to spawn
+	
+	_restartImage.src = "images/restart.png";
+	reset();
+	main();
+}
+//gets the current mouse position
+function getMousePos(_canvas, evt) {
+        var rect = _canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+//event that monitors for the mouse click on the area where the Reset Text is located
+_canvas.addEventListener('mousedown', function(evt) {
+        var mousePos = getMousePos(_canvas, evt);
+		if(mousePos.x >290 && mousePos.x < (290+112) && mousePos.y > 270 && mousePos.y<(270+35)){ //image coordinates x = 290 y = 270. Image width = 112 image height = 63 Using 63 as the image height does not work.
+			clearAll();
+    }
+      }, false);
+	  
+//event that monitors the mouse movements to detect hovering over the Reset Text and change the color of the text.
+_canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(_canvas, evt);
+		if(mousePos.x >290 && mousePos.x < (290+112) && mousePos.y > 270 && mousePos.y<(270+35)){ //image coordinates x = 290 y = 270. Image width = 112 image height = 63. Using 63 as the image height does not work.
+        if (_hero.lives == 0){
+			if (_restartSelected == false){
+				if (_restartSelectedReady){
+					//_ctx.drawImage(_restartSelectedImage, 290,270);
+					_restartImage.src = "images/restartSelected.png";
+					_render();
+					_restartSelected = true;
+					
+				}
+				//console.log("over");
+			}
+		}
+    }else{
+		if (_hero.lives == 0){
+			if (_restartSelected == true){
+				if (_restartReady){
+					//_ctx.drawImage(_restartImage, 290,270); //instead of adding more images I simply replace the source
+					_restartImage.src = "images/restart.png";
+					_render();
+					_restartSelected = false;
+					
+				}
+				//console.log("over");
+			}
+		}
+	}
+      }, false);
+/*
+_canvas.addEventListener("mousedown", clickedRestart, false);
+function clickedRestart(e){
+    e.preventDefault();
+	var rect = canvas.getBoundingClientRect();
+    var x = e.clientX;
+    var y = e.clientY;
+
+    if(x>290 && x<(290+112) && y>270 && y>(270+63)){ //image coordinates x = 290 y = 270. Image width = 112 image height = 63
+        alert('Hello');
+    }
+}*/

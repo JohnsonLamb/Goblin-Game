@@ -17,9 +17,19 @@ TO DO:
 
 - When the a green goblin is caught while a blue or red are present, the blue and red reset. Investigate why and fix it so it does not happen. DONE[19-03-2017]
 
-- Make the Red Goblin spawn away from the Player
+- Make the Red Goblin spawn away from the Player DONE[21-03-2017]
 
-- Add a restart button after the game over. (needs a reset function to reset the variables)
+- Add a restart button after the game over. (needs a reset function to reset the variables) DONE[21-03-2017]
+
+- Rethink Bloodlust mechanic to include charges.
+
+- Add Berserk Mechanic to be immune to redgoblins. Berserk mechaninc has charges that are filled by picking up mushrooms.
+
+- [maybe] add the slow mechanic
+
+- Add an HighScore
+
+- Clean up the code
 
 - [Maybe] Make a timer for the green goblins. The faster they are caught the higher the points down to the default 5 points.
 

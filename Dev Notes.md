@@ -65,3 +65,21 @@ DONE:
 - Fixed the reappearing of the red and blue goblin when a green one is caught. (they were already on the screen and after touching a green goblin they would suddenly change places)
 
 - Toned down the speed of the Red Goblin
+
+--20-03-2017--
+
+- Fixed the spawn bug (the red and blu goblins would reappear after catching a green one)
+
+- Started implementing the Quadrant solution for spawning the red goblin away from the player
+
+--21-03-2017--
+
+- Finished implementing the quadrant solution. Now the red goblin spawns away from the player
+
+- Increased the timer of the red Goblin.
+
+- Increased the chance of spawining red goblin.
+
+- Increased the timer of the Blue Goblin.
+
+- Implemented the Reset button funcionality
