@@ -510,16 +510,16 @@ function checkQuandrant(x,y){
 var _update = function (modifier) {
 	//on top of checking where the player is intending to move the character, this function also checks to see if the Hero 
 	//is within the intended bounds. The hero is supposed to just move a bit into the bushes and not pass them
-	if (38 in _keysDown && _hero.y >10) { // Player holding up 
+	if (38 in _keysDown && _hero.y >50) { // Player holding up 
 		_hero.y -= _hero.speed * modifier;
 	}
-	if (40 in _keysDown && _hero.y<410) { // Player holding down
+	if (40 in _keysDown && _hero.y<395) { // Player holding down
 		_hero.y += _hero.speed * modifier;
 	}
-	if (37 in _keysDown && _hero.x >25) { // Player holding left
+	if (37 in _keysDown && _hero.x >50) { // Player holding left
 		_hero.x -= _hero.speed * modifier;
 	}
-	if (39 in _keysDown && _hero.x<615) { // Player holding right
+	if (39 in _keysDown && _hero.x<585) { // Player holding right
 		_hero.x += _hero.speed * modifier;
 	}
 	// red Goblin Movement towards the player
