@@ -83,3 +83,5 @@ DONE:
 - Increased the timer of the Blue Goblin.
 
 - Implemented the Reset button funcionality
+
+- Made the Art to be used with the Berserker Rage Mechanic

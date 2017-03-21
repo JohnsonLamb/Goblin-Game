@@ -15,3 +15,6 @@ http://www.illmosis.net/art.php?art=sprites-redarremer
 
 Heart
 http://steeleagle1.deviantart.com/art/Isaac-s-Heart-Pixel-Art-530018296
+
+Mushroom
+https://jacobl14.wordpress.com/tag/firefox-pixel-art/
