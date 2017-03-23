@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Goblin Catcher</title>
+		<title>Goblin Hunter</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -12,11 +12,65 @@
 	</head>
 	<body>
 		<div class="container">
-			<header class="row"><h1>The Goblin Game</h1></header>
+			<header class="row"><h1>Goblin Hunter</h1></header>
 			<div id="gameCanvas" class="row"></div>
 			<div id="gameInstructions" class="row">
-				<h3>How to Play</h4>
-				<img src="images/keyboardKeys.png" alt="Keyboard Controls">
+				<h1>How to Play</h3>
+				<!--<img src="images/keyboardKeys.png" alt="Keyboard Controls">-->
+				<div id="hero">
+					<div class="infoImg">
+					<img src="images/howToSquareHero.png" alt="Hero">
+					</div>
+					<div class="infoText">
+						You are the Goblin Hunter <span class="enfase">Champion</span> of your village and you have been sent to participate in the Valhalla Goblin Hunter Championship.
+						Your goal is to get as many points as possible. To do so you must hunt down the Green and Blue goblins that appear while avoiding the Red ones. 
+						To move around use the <span class="enfaseKeys">Arrow Keys</span>, it's that simple!
+					</div>
+				</div>
+				<div id="greenGoblin">
+					<div class="infoImg">
+					<img src="images/howToSquareGreenGoblin.png" alt="Green Goblin">
+					</div>
+					<div class="infoText">
+						The <span class="enfaseGreen">Green Goblin</span> is the easiest to hunt but it's also worth the least points. 
+						He's pretty dumb too and will stand there waiting for you to finish him off.
+					</div>
+				</div>
+				<div id="blueGoblin">
+					<div class="infoImg">
+					<img src="images/howToSquareBlueGoblin.png" alt="Green Goblin">
+					</div>
+					<div class="infoText">
+						The <span class="enfaseBlue">Blue Goblin</span> is an elusive one. He's a lot smarter than his Green kin and 
+						will only show up to tease you before disappearing. The faster you hunt him down the more points you will get.
+					</div>
+				</div>
+				<div id="redGoblin">
+					<div class="infoImg">
+					<img src="images/howToSquareRedGoblin.png" alt="Green Goblin">
+					</div>
+					<div class="infoText">
+						The <span class="enfaseRed">Red Goblin</span> is mean and has a purpose: to hunt you down. 
+						Luckily he won't be around for long before needing to return to the Goblin Dimension. When you see one, run!
+					</div>
+				</div>
+				<div id="lives">
+					<div class="infoImg">
+					<img src="images/howToSquareLives.png" alt="Green Goblin">
+					</div>
+					<div class="infoText">
+						When the Red Goblin catches you, you'll lose one <span class="enfase">life</span>. Lose 3 lives and the game ends. Try to avoid that.
+					</div>
+				</div>
+				<div id="bloodlust">
+					<div class="infoImg">
+					<img src="images/howToSquareBloodLust.png" alt="Green Goblin">
+					</div>
+					<div class="infoText">
+						As you hunt down the Green Goblins you'll notice that your taste for blood will increase. Hunting enough will 
+						fill up your <span class="enfase">Bloodlust</span> meter and using it will give you a short burst of speed. To use Bloodlust, press the <span class="enfaseKeys">Space key</span>.
+					</div>
+				</div>
 			</div>
 		</div>
 		<script src="game.js"></script>

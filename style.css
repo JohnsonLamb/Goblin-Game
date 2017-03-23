@@ -21,4 +21,35 @@ h1,h3 {
     margin-right: auto;
     display: block;
 }
-
+#gameInstructions{
+	color: white;
+	font-family: harrington;
+	text-align: justify;
+	font-size: 1.3em;
+}
+.enfase{
+	color: #FFD800;
+	font-weight: bold;
+}
+.enfaseGreen{
+	color: #44B368;
+}
+.enfaseBlue{
+	color: #40CFE7;
+}
+.enfaseRed{
+	color:#A70500;
+}
+.enfaseKeys{
+	color: #FF6A00;
+	font-weight: bold;
+}
+.infoImg img{
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+.infoText{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

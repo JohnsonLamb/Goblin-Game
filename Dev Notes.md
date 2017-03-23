@@ -85,3 +85,9 @@ DONE:
 - Implemented the Reset button funcionality
 
 - Made the Art to be used with the Berserker Rage Mechanic
+
+--23-03-2017--
+
+- Added a Highscore to the Game Over screen that is persistant in the session
+
+- Made the How to Play section of the website much more compreensive and added a bit of flair and lore.

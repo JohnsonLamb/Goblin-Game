@@ -142,6 +142,7 @@ _scoreImage.onload = function () {
 	_scoreReady = true;
 };
 _scoreImage.src = "images/Score.png";
+
 //Restart
 var _restartReady = false;
 var _restartImage = new Image();
@@ -149,6 +150,7 @@ _restartImage.onload = function () {
 	_restartReady = true;
 };
 _restartImage.src = "images/restart.png";
+
 //Restart Selected
 var _restartSelectedReady = false;
 var _restartSelectedImage = new Image();
@@ -156,6 +158,14 @@ _restartSelectedImage.onload = function () {
 	_restartSelectedReady = true;
 };
 _restartSelectedImage.src = "images/restartSelected.png";
+
+//High Score
+var _highScoreReady = false;
+var _highScoreImage = new Image();
+_highScoreImage.onload = function () {
+	_highScoreReady = true;
+};
+_highScoreImage.src = "images/highscore.png";
 
 // Game objects
 var _hero = {
@@ -312,6 +322,8 @@ var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spaw
 var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
 var _blueGoblinCatchPoints = 0; //NOT IN USE
 var _blueGoblinGoodSpawn = false;
+
+var _highScore = 0;
 
 var _bloodLust = false; //variable to control the speed boost funtion
 var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
@@ -578,6 +590,9 @@ var _update = function (modifier) {
 		//if the player has used the bloodlust speed boost and has accumulated the necessary bloodlust points, gain bloodlust again
 		if (_bloodLust == false && _bloodLustPoints == 5){_bloodLust = true;_bloodLustPoints = 0} 
 		_pointsTotal += _pointsGreenGoblin;
+		if (_pointsTotal > _highScore){
+			_highScore = _pointsTotal
+		} 
 		_greenGoblinCaught = true;
 		//when a green goblin is caught, randomly make the Blue One Appear
 		/*if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
@@ -612,6 +627,9 @@ var _update = function (modifier) {
 		if (_timeDiff < 500){_timeDiff = 500;}
 		_pointsBlueGoblinTime = Math.round(_pointsBlueGoblin / (_timeDiff / 1000));
 		_pointsTotal += _pointsBlueGoblinTime;
+		if (_pointsTotal > _highScore){
+			_highScore = _pointsTotal
+		} 
 		_blueGoblinCaught = true;
 		_blueGoblinCaughtXY = [_blueGoblin.x,_blueGoblin.y]; //registers where the blue goblin was caught to show the points
 		_blueGoblinAppeared = false;
@@ -673,7 +691,18 @@ var _render = function () {
 		if (_restartReady){
 			_ctx.drawImage(_restartImage, 290,270);
 		}
-		
+		if (_highScoreReady){
+			_ctx.drawImage(_highScoreImage,185+45, 75);
+		}
+		_ctx.fillStyle = "rgb(255, 216, 0)";
+		_ctx.font = "38px Harrington";
+		_ctx.textAlign = "left";
+		_ctx.textBaseline = "top";
+		_ctx.shadowColor = "black";
+		_ctx.shadowOffsetX = 3;
+		_ctx.shadowOffsetY = 3;
+		_ctx.shadowBlur = 10;
+		_ctx.fillText(_highScore+" pts", 280+20, 130);
 	}
 	switch(_hero.lives){
 		case 3:

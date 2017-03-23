@@ -27,7 +27,7 @@ TO DO:
 
 - [maybe] add the slow mechanic
 
-- Add an HighScore
+- Add an HighScore DONE[23-03-2017]
 
 - Clean up the code
 
