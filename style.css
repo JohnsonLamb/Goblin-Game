@@ -7,26 +7,87 @@ h1,h3 {
 	text-align: center;
 	font-family: Harrington;
 }
-#gameInstructions{ 
+#gameInstructions,#upcomingFeatures,#sources{ 
 	width: 500px;
 }
-#theGame{
-	border: thin solid #FFD800,
+#menu{
+	width: 510px;
 }
-#theGame, #gameInstructions{
+#theGame{
+	border: thick solid black;
+	border-radius: 25px;
+	display: block;
+}
+
+#theGame, #gameInstructions,#upcomingFeatures,#menu,#sources{
 	 
 	padding-left: 0;
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
-    display: block;
 }
-#gameInstructions{
+#gameInstructions,#upcomingFeatures,#sources{
 	color: white;
-	font-family: harrington;
+	font-family: Harrington;
 	text-align: justify;
 	font-size: 1.3em;
 }
+#menu{
+	color:white;
+	font-family: Harrington;
+	font-size: 1.6em;
+	margin-top: 15px;
+	
+}
+.infoImg{
+	margin-top:35px;
+}
+#menu ul{
+	list-style-type: none;
+}
+#menu li{
+	text-align:center;
+	display: inline;
+	margin-left: 20px;
+	}
+#menu li a:visited,#menu li a:link {
+	color: white;
+	text-decoration:  none;
+}
+#menu li a:hover{
+	color: #FFD800;
+	text-decoration:  none;
+}
+##upcomingFeatures h1,#gameInstructions h1{
+	margin-top: 25px;
+}
+#upcomingFeatures a,
+#upcomingFeatures a:link,
+#upcomingFeatures a:visited,
+#upcomingFeatures a:focus,
+#upcomingFeatures a:hover,
+#gameInstructions a,
+#gameInstructions a:link,
+#gameInstructions a:visited,
+#gameInstructions a:focus,
+#gameInstructions a:hover,
+#sources a,
+#sources a:link,
+#sources a:visited,
+#sources a:focus,
+#sources a:hover
+{
+	color: #FFD800;
+	text-decoration:none;
+}
+.noShow{
+	display:none;
+}
+
+.show{
+	display: block;
+}
+
 .enfase{
 	color: #FFD800;
 	font-weight: bold;

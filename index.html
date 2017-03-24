@@ -14,8 +14,17 @@
 		<div class="container">
 			<header class="row"><h1>Goblin Hunter</h1></header>
 			<div id="gameCanvas" class="row"></div>
-			<div id="gameInstructions" class="row">
-				<h1>How to Play</h3>
+			
+				<nav id="menu" class="row show">
+					<ul>
+						<li><a href="#howToPlay">How to Play</a></li>
+						<li><a href="#upFeatures">Upcoming Features</a></li>
+						<li><a href="#sources">Sources</a></li>
+					<ul>
+				</nav>
+			
+			<div id="gameInstructions" class="row show">
+				<h1><a name="howToPlay">How to Play</a></h3>
 				<!--<img src="images/keyboardKeys.png" alt="Keyboard Controls">-->
 				<div id="hero">
 					<div class="infoImg">
@@ -38,7 +47,7 @@
 				</div>
 				<div id="blueGoblin">
 					<div class="infoImg">
-					<img src="images/howToSquareBlueGoblin.png" alt="Green Goblin">
+					<img src="images/howToSquareBlueGoblin.png" alt="Blue Goblin">
 					</div>
 					<div class="infoText">
 						The <span class="enfaseBlue">Blue Goblin</span> is an elusive one. He's a lot smarter than his Green kin and 
@@ -47,7 +56,7 @@
 				</div>
 				<div id="redGoblin">
 					<div class="infoImg">
-					<img src="images/howToSquareRedGoblin.png" alt="Green Goblin">
+					<img src="images/howToSquareRedGoblin.png" alt="Red Goblin">
 					</div>
 					<div class="infoText">
 						The <span class="enfaseRed">Red Goblin</span> is mean and has a purpose: to hunt you down. 
@@ -56,7 +65,7 @@
 				</div>
 				<div id="lives">
 					<div class="infoImg">
-					<img src="images/howToSquareLives.png" alt="Green Goblin">
+					<img src="images/howToSquareLives.png" alt="Lives">
 					</div>
 					<div class="infoText">
 						When the Red Goblin catches you, you'll lose one <span class="enfase">life</span>. Lose 3 lives and the game ends. Try to avoid that.
@@ -64,12 +73,51 @@
 				</div>
 				<div id="bloodlust">
 					<div class="infoImg">
-					<img src="images/howToSquareBloodLust.png" alt="Green Goblin">
+					<img src="images/howToSquareBloodLust.png" alt="Bloodlust">
 					</div>
 					<div class="infoText">
 						As you hunt down the Green Goblins you'll notice that your taste for blood will increase. Hunting enough will 
 						fill up your <span class="enfase">Bloodlust</span> meter and using it will give you a short burst of speed. To use Bloodlust, press the <span class="enfaseKeys">Space key</span>.
 					</div>
+				</div>
+			</div>
+			<div id="upcomingFeatures" class="row Show">
+				<h1><a name="upFeatures"> Upcoming Features</a></h3>
+				<div id="bloodlustCharges">
+					<div class="infoImg">
+					<img src="images/upcomingSquareBloodLustCharges.png" alt="Bloodlust Charges Concept">
+					</div>
+					<div class="infoText">
+						Having only one use of the <span class="enfase">Bloodlust</span> ability leads to stale gameplay. In order to make things more interesting, a
+						<span class="enfase">Charge</span> system will be implemented. You will then be able to store up to 3 charges of bloodlust to use at your discretion.
+					</div>
+				</div>
+				<div id="BerserkCharges">
+					<div class="infoImg">
+					<img src="images/upcomingBerserkCharges.png" alt="Berserk">
+					</div>
+					<div class="infoText">
+						Having charges on the <span class="enfase">Bloodlust</span> ability is a start but you're still left with only one ability and that is limiting. Fear not! Soon you'll 
+						be able to pick up Amanita mushrooms from fallen <span class="enfaseBlue">Blue Goblins</span> and use them to fuel your <span class="enfase">Berserker</span> rage. While in this trance like state you'll be able
+						to take the <span class="enfaseRed">Red Goblins</span> head on for some sweet points. No more running!
+					</div>
+				</div>
+				<div id="Dificulty">
+					<div class="infoImg">
+					<img src="images/upcomingDifficulty.png" alt="Difficulty">
+					</div>
+					<div class="infoText">
+						You are probably thinking that with the above mentioned additions the game will become easy. Worry not fearsome warrior for in the not so distant
+						future the difficulty will scale as you progress. The more points you accumulate the higher the chance of being harassed by the <span class="enfaseRed">Red Goblin</span>. 
+						He will also be able to pursue you for longer periods of time.
+					</div>
+				</div>
+			</div>
+			<div id="sources" class="row Show">
+				<h1><a name="Sources">Sources</a></h3>
+				<div class="infoText">
+				Eventually there will be displayed a pretty list of the assets I used to create this game. For now here is a a <a href="https://github.com/JohnsonLamb/Goblin-Game/blob/master/Sources.md" target="_blank">link</a> to the existing list in
+				the gitHub project page.
 				</div>
 			</div>
 		</div>

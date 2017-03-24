@@ -323,7 +323,7 @@ var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
 var _blueGoblinCatchPoints = 0; //NOT IN USE
 var _blueGoblinGoodSpawn = false;
 
-var _highScore = 0;
+var _highScore = 0; //variable to store the Highscore obtained in the play session. It will be displayed on the Game over Screen
 
 var _bloodLust = false; //variable to control the speed boost funtion
 var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
@@ -335,6 +335,7 @@ var _redGoblinTimeout = 2.5; //variable to control the amount of time the RedGob
 var _redGoblinTimerControl; //varibale used to control the SetTimeOut on the red goblin
 var _redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
 var _redGoblinGoodSpawn = false //variable to control if the red goblin has a good place to spawn
+
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -477,27 +478,8 @@ var reset = function () {
 		_redGoblin.x = RedQuadSpawn.x + (Math.random() * RedQuadSpawn.w);
 		_redGoblin.y = RedQuadSpawn.y + (Math.random() * RedQuadSpawn.h);
 		_redGoblinGoodSpawn = true;
-		/*
-		_redGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
-		_redGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
-		_redGoblinGoodSpawn = true;*/
 		}
-		//console.log(RedQuadSpawn.q);
-		
-	}
-
-		//tried using a while loop but it would occasionaly cause the game to freeze. 
-		//need a different method to spawn the red goblin away from the player
-		/*while (_redGoblinGoodSpawn == false){
-			var auxX = 32 + (Math.random() * ((_canvas.width-50) - 64));
-			var auxY = 32 + (Math.random() * ((_canvas.height-50) - 64));
-			if (((auxX > _hero.x+300)||(auxX < _hero.x-300))&&((auxY > _hero.y+300)||(auxX < _hero.y-300))){
-				_redGoblin.x = auxX;
-				_redGoblin.y = auxY;
-				_redGoblinGoodSpawn = true;
-			}
-		}*/
-	
+	}	
 };
 function checkQuandrant(x,y){
 	if (x <= Q12.x && y <=Q13.y){return Q11}
@@ -548,25 +530,7 @@ var _update = function (modifier) {
 	if (_redGoblin.y >_hero.y){
 		_redGoblin.y -= _redGoblin.speed * modifier
 	}
-	/*
-	Tryoing to give the Goblin a delay but it does not appear smooth
-	if (_redGoblin.x < _hero.x){
-		setTimeout(function() {
-			_redGoblin.x += _redGoblin.speed * modifier;},50)
-		}
-	if (_redGoblin.x > _hero.x){
-		setTimeout(function() {
-			_redGoblin.x -= _redGoblin.speed * modifier;},50)
-		}
-	if (_redGoblin.y <_hero.y){
-		setTimeout(function() {
-		 _redGoblin.y += _redGoblin.speed * modifier;},50)
-		}
-	if (_redGoblin.y >_hero.y){
-		setTimeout(function() {
-		_redGoblin.y -= _redGoblin.speed * modifier},50)
-		}
-	*/
+
 	//Speed boost when pressing Space BLOODLUST
 	//when the player presses the SPACE key, the Hero gets a speed boost for 1 sec
 	if (32 in _keysDown && _bloodLust == true){
@@ -590,27 +554,11 @@ var _update = function (modifier) {
 		//if the player has used the bloodlust speed boost and has accumulated the necessary bloodlust points, gain bloodlust again
 		if (_bloodLust == false && _bloodLustPoints == 5){_bloodLust = true;_bloodLustPoints = 0} 
 		_pointsTotal += _pointsGreenGoblin;
+		//update the High Score
 		if (_pointsTotal > _highScore){
 			_highScore = _pointsTotal
 		} 
 		_greenGoblinCaught = true;
-		//when a green goblin is caught, randomly make the Blue One Appear
-		/*if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
-		_blueGoblinAppeared = true;
-		_blueGoblinTimerControl = setTimeout(function() {
-			_blueGoblinAppeared = false;
-			
-		}, _blueGoblinTimeout * 1000);
-		_blueGoblinStartTime = new Date();
-		}*/
-		//when a green goblin is caught, randomly make the Red One Appear
-		/*if (Math.random()<_redGoblinAppChance && _redGoblinAppeared == false){
-		_redGoblinAppeared = true;
-		_redGoblinTimerControl = setTimeout(function() {
-			_redGoblinAppeared = false;
-			
-		}, _redGoblinTimeout * 1000);
-		}*/
 		reset();
 	}
 	//is the hero touching the Blue Goblin?
@@ -627,6 +575,7 @@ var _update = function (modifier) {
 		if (_timeDiff < 500){_timeDiff = 500;}
 		_pointsBlueGoblinTime = Math.round(_pointsBlueGoblin / (_timeDiff / 1000));
 		_pointsTotal += _pointsBlueGoblinTime;
+		//update de High Score
 		if (_pointsTotal > _highScore){
 			_highScore = _pointsTotal
 		} 
@@ -771,7 +720,6 @@ var _render = function () {
 	_ctx.shadowOffsetX = 3;
     _ctx.shadowOffsetY = 3;
 	_ctx.shadowBlur = 10;
-	//_ctx.fillText("Goblins caught: " + _greenGoblinsCaught, 50, 5); OLD display of monsters caught
 	_ctx.fillText(_pointsTotal + " pts", 510, -5);
 	
 	//If a goblin was caught, display the points gained
@@ -783,11 +731,6 @@ var _render = function () {
 		--_blueGoblinCaughtXY[1];
 	}
 	if (_greenGoblinCaught == true){_greenGoblinCaught = false;} //when the player catches a blue goblin this ensures that a new green goblin is not spawned.
-	/*
-	//test to see the hero coordinates:
-	_ctx.fillText("Y: " + _hero.y, 50, 25);
-	_ctx.fillText("X: " + _hero.x, 50, 55);
-	*/
 };
 
 // The main game loop
@@ -866,7 +809,6 @@ _canvas.addEventListener('mousemove', function(evt) {
         if (_hero.lives == 0){
 			if (_restartSelected == false){
 				if (_restartSelectedReady){
-					//_ctx.drawImage(_restartSelectedImage, 290,270);
 					_restartImage.src = "images/restartSelected.png";
 					_render();
 					_restartSelected = true;
@@ -879,7 +821,6 @@ _canvas.addEventListener('mousemove', function(evt) {
 		if (_hero.lives == 0){
 			if (_restartSelected == true){
 				if (_restartReady){
-					//_ctx.drawImage(_restartImage, 290,270); //instead of adding more images I simply replace the source
 					_restartImage.src = "images/restart.png";
 					_render();
 					_restartSelected = false;
@@ -890,15 +831,3 @@ _canvas.addEventListener('mousemove', function(evt) {
 		}
 	}
       }, false);
-/*
-_canvas.addEventListener("mousedown", clickedRestart, false);
-function clickedRestart(e){
-    e.preventDefault();
-	var rect = canvas.getBoundingClientRect();
-    var x = e.clientX;
-    var y = e.clientY;
-
-    if(x>290 && x<(290+112) && y>270 && y>(270+63)){ //image coordinates x = 290 y = 270. Image width = 112 image height = 63
-        alert('Hello');
-    }
-}*/

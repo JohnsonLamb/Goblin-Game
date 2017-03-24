@@ -91,3 +91,7 @@ DONE:
 - Added a Highscore to the Game Over screen that is persistant in the session
 
 - Made the How to Play section of the website much more compreensive and added a bit of flair and lore.
+
+--24-03-2017--
+
+- Added an Upcoming Features to the webpage to display the features that will become available in the future.
