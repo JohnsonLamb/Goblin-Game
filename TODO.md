@@ -27,6 +27,10 @@ TO DO:
 
 - Add Berserk Mechanic to be immune to redgoblins. Berserk mechaninc has charges that are filled by picking up mushrooms. DONE[25-03-2017]
 
+- Scale dificulty DONE[25-03-2017]
+
+- Clear indicators (animations?) that the player has interacted with something - caught goblins or mushrooms, got hurt by the red goblin.
+
 - Make the green and blue goblins spawn away from the player to provide a better game experience. The player needs to understand when he catches a Goblin.
 
 - Clean up the code

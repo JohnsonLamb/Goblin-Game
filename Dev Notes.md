@@ -111,3 +111,5 @@ DONE:
 - Added the Bloodrage, Mushroom and Berserk explanations to the How to Play.
 
 - Removed completed features from the Upcoming Features section.
+
+- Added scaling difficulty. The Red Goblin will have greater chance to appear as the player catches green goblins. The time it takes for him to disappear will be longer as the player catches blue goblins. Picking up mushrooms for points (after having 3) and killing Red Goblins will increase his speed. These will increase up to a cap.
