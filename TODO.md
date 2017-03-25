@@ -21,15 +21,17 @@ TO DO:
 
 - Add a restart button after the game over. (needs a reset function to reset the variables) DONE[21-03-2017]
 
-- Rethink Bloodlust mechanic to include charges.
-
-- Add Berserk Mechanic to be immune to redgoblins. Berserk mechaninc has charges that are filled by picking up mushrooms.
-
-- [maybe] add the slow mechanic
+- Rethink Bloodlust mechanic to include charges. DONE[24-03-2017]
 
 - Add an HighScore DONE[23-03-2017]
 
+- Add Berserk Mechanic to be immune to redgoblins. Berserk mechaninc has charges that are filled by picking up mushrooms. DONE[25-03-2017]
+
+- Make the green and blue goblins spawn away from the player to provide a better game experience. The player needs to understand when he catches a Goblin.
+
 - Clean up the code
+
+- [maybe] add the slow mechanic
 
 - [Maybe] Make a timer for the green goblins. The faster they are caught the higher the points down to the default 5 points.
 

@@ -95,3 +95,19 @@ DONE:
 --24-03-2017--
 
 - Added an Upcoming Features to the webpage to display the features that will become available in the future.
+
+- Implemented the Bloodrage system. It has the same effect as Bloodlust: it gives the player speed when used. It has 3 charges and each charge is filled by catching 6 green goblins.
+
+- Implemented the mushroom dropping from the Blue Goblins.
+
+--25-03-2017--
+
+- Berserk mechaninc fully implemented: Blue goblins drop Mushrooms. The player can pick them up and hold 3 of them. Using the mushrooms with the shift key will make the hero invunerable to the red goblins and when it gets in contact with one of them will kill them and get points.
+
+- Mushrooms picked when holding already 3 will give points.
+
+- added the high score to the top left screen
+
+- Added the Bloodrage, Mushroom and Berserk explanations to the How to Play.
+
+- Removed completed features from the Upcoming Features section.
