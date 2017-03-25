@@ -381,7 +381,7 @@ var _hero = {
 	speedBuff: 30,
 	lives: 3,
 	x: 0,
-	y: 0
+	y: 0,
 };
 var _greenGoblin = {
 	x: 0,
@@ -531,6 +531,9 @@ var Q44 ={
 }
 // Game Score
 var _goblinsCaught = 0; // total goblins caught
+var _greenGoblinsCaught = 0; 
+var _blueGoblinsCaught = 0;
+var _redGoblinsCaught = 0;
 var _pointsGreenGoblin = 5;
 var _pointsBlueGoblin = 50; // variable that holds the Blue Goblin Points standard
 var _pointsBlueGoblinTime = 0; //variable to hold the time dependent points the player gets for catching the Blue Goblin
@@ -761,22 +764,35 @@ function checkQuandrant(x,y){
 	if (x > Q43.x && x <= Q44.x && y >= Q33.y){return Q43}
 	if (x > Q44.x && y >= Q33.y){return Q44}
 };
-/*
-function scaleDifficulty{points}{
+
+function scaleDifficulty(keyword){
+	
+	// the difficulty will scale by increasing 3 variables of the Red Goblin: chance to appear, speed and time before vanishing.
+	// The chance to appear will increase as the player catches green goblins
+	// The time before vanishing will increase as the player catches blue goblins
+	// The speed will increase when the player picks up mushrooms after having 3 on the inventory and after killing a red goblin with berserk
 	//original: 180
-	if (_redGoblin.speed <= 250){
-		_redGoblin.speed += 10;
+	if (keyword == "speed"){
+		if (_redGoblin.speed <= 250){
+			_redGoblin.speed += 10;
+			//console.log("speed up");
+		}
 	}
 	//original: 0.20
-	if (_redGoblinAppChance <=0.90){
+	if (keyword == "chance"){
+		if (_redGoblinAppChance <=0.90){
 		_redGoblinAppChance += 0.05;}
-	//original: 2
-	if (_reGoblinTimeout <= 10){
-		_redGoblinTimeout += 0.5
+		//console.log("chance up");
 	}
-	
+	//original: 2
+	if (keyword == "time"){
+		if (_redGoblinTimeout <= 10){
+		_redGoblinTimeout += 0.5
+		//console.log("time up");
+		}
+	}
 };
-*/
+
 // Update game objects
 //the modifier variable is used to control the speed in which the Hero moves indepently of the speed the script is executed
 var _update = function (modifier) {
@@ -847,6 +863,10 @@ var _update = function (modifier) {
 		&& _greenGoblin.y <= (_hero.y + 32)
 	) {
 		++_goblinsCaught;
+		++_greenGoblinsCaught
+		if (_greenGoblinsCaught % 6 == 0){
+			scaleDifficulty("chance");
+		}
 		/*
 		//if the player has used the bloodlust speed boost, increase the bloodLustpoints
 		if (_bloodLust == false){++_bloodLustPoints}
@@ -879,6 +899,10 @@ var _update = function (modifier) {
 		&& _blueGoblin.y <= (_hero.y + 32)
 	) {
 		++_goblinsCaught;
+		++_blueGoblinsCaught;
+		if (_blueGoblinsCaught % 3 == 0){
+			scaleDifficulty("time");
+		}
 		_blueGoblinEndTime = new Date();
 		var _timeDiff = _blueGoblinEndTime - _blueGoblinStartTime;
 		if (_timeDiff < 500){_timeDiff = 500;}
@@ -907,6 +931,8 @@ var _update = function (modifier) {
 		if(_berserk.active == false){
 			--_hero.lives;
 		}else{
+				++_redGoblinsCaught;
+				scaleDifficulty("speed");
 				_berserk.active = false;
 				_pointsTotal += _redGoblin.points;
 				_redGoblin.pointsEnable = true; //allow for the floating text to be displayed
@@ -931,13 +957,16 @@ var _update = function (modifier) {
 		if (_berserk.charges < 3){
 			++_berserk.charges;
 		}else{
+			scaleDifficulty("speed");
 			_pointsTotal += _mushroom.points;
 			_mushroom.pointsEnable = true;
 			//update de High Score
 			if (_pointsTotal > _highScore){
 				_highScore = _pointsTotal
-			} 
+			}
+			
 		}
+		
 		_mushroom.dropped = false;
 		_mushroom.show = false;
 		clearTimeout(_mushroom.timeCtrl);
@@ -1269,7 +1298,9 @@ function clearAll(){
 	_restartSelected = false;
 	_hero.lives = 3;
 	_goblinsCaught = 0; // total goblins caught
-
+    _greenGoblinsCaught = 0; 
+	_blueGoblinsCaught = 0;
+	_redGoblinsCaught = 0;
 	_pointsBlueGoblinTime = 0; //variable to hold the time dependent points the player gets for catching the Blue Goblin
 	_pointsTotal = 0;
 	_greenGoblinCaught = false; //varibale to control if the green goblin is caught
