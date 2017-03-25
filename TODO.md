@@ -29,6 +29,8 @@ TO DO:
 
 - Scale dificulty DONE[25-03-2017]
 
+- LeaderBoard
+
 - Clear indicators (animations?) that the player has interacted with something - caught goblins or mushrooms, got hurt by the red goblin.
 
 - Make the green and blue goblins spawn away from the player to provide a better game experience. The player needs to understand when he catches a Goblin.
