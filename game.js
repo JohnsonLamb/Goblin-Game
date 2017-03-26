@@ -375,6 +375,14 @@ _highscoreTopImage.onload = function () {
 };
 _highscoreTopImage.src = "images/highscoreTop.png";
 
+//Heart
+var _heartReady = false;
+var _heartImage = new Image();
+_heartImage.onload = function () {
+	_heartReady = true;
+};
+_heartImage.src = "images/heart.png";
+
 // Game objects
 var _hero = {
 	speed: 256, // movement in pixels per second
@@ -397,9 +405,13 @@ var _redGoblin = {
 	speed: 180,
 	x: 0,
 	y: 0,
-	points: 50,
+	points: 75,
 	pointsEnable: false, //variable to control if the red Goblin has been caught with berserk active. Used to display the floating points text
 	pointsDuration: 0.5,
+	heartDrop: 0.5, //drop rate of Heart when the red Goblin is killed
+	killed: false,
+	killX:0,
+	killY:0,
 }
 
 var _mushroom = {
@@ -413,6 +425,16 @@ var _mushroom = {
 	timeCtrl:"", //variable to be used to stop the timer when the mushroom is picked up
 	pointsEnable: false, //variable to control if the mushroom has been caught after berserk charges are full. Used to display the floating points text when the Berserk charges are full
 	pointsDuration: 0.5,
+}
+
+var _heart = {
+	x:0,
+	y:0,
+	dropped: false,
+	show: false,
+	delay: 0.6,
+	duration: 3,
+	timeCtrl:"",
 }
 
 //Map quadrants
@@ -640,7 +662,7 @@ var reset = function () {
 	//Make the mushroom appear
 	if (_blueGoblinCaught == true){
 	if (_mushroom.dropped == false && Math.random() < _blueGoblin.shroomRate){
-			_mushroom.dropped = true
+			_mushroom.dropped = true;
 			_mushroom.x = _blueGoblinCaughtXY[0];
 			_mushroom.y = _blueGoblinCaughtXY[1];
 			//give a little bit of time before the mushroom appears in order for the player to not pick it up without realizing
@@ -653,6 +675,24 @@ var reset = function () {
 			}, _mushroom.delay * 1000);
 		}
 	}
+	//make the heart appear if the player kills a red goblin and has less than 3 lives
+	if (_redGoblin.killed == true){
+		if (_heart.dropped == false && Math.random() < _redGoblin.heartDrop && _hero.lives < 3){
+			_heart.dropped = true;
+			_heart.x = _redGoblin.killX;
+			_heart.y = _redGoblin.killY;
+			setTimeout(function() {
+				_heart.show = true;
+				_heart.timeCtrl = setTimeout(function() {
+					_heart.show = false;
+					_heart.dropped = false;
+				}, _heart.duration * 1000);
+			}, _heart.delay * 1000);
+		}
+		
+		_redGoblin.killed = false;
+	}
+	
 	//spawn the Red Goblin somewhere
 	if (_greenGoblinCaught == true && _redGoblinAppeared == false){	
 		//throw the redGoblin somewhere in the screen randomly
@@ -824,17 +864,6 @@ var _update = function (modifier) {
 	if (_redGoblin.y >_hero.y){
 		_redGoblin.y -= _redGoblin.speed * modifier
 	}
-
-	//Speed boost when pressing Space BLOODLUST
-	//when the player presses the SPACE key, the Hero gets a speed boost for 1 sec
-	/*if (32 in _keysDown && _bloodLust == true){
-		_hero.speed = _hero.speed + _hero.speedBuff;
-		console.log("speed: "+_hero.speed);
-		setTimeout(function() {
-			_bloodLust = false;
-			_hero.speed = 256;
-		}, 1 * 1000); //perhaps change the 1 to a variable to adjust the time of the boost
-	}*/
 	
 	if (32 in _keysDown && _bloodRage.active == false && _bloodRage.charges >= 1){
 		_hero.speed = _hero.speed + _bloodRage.speed;
@@ -867,12 +896,7 @@ var _update = function (modifier) {
 		if (_greenGoblinsCaught % 6 == 0){
 			scaleDifficulty("chance");
 		}
-		/*
-		//if the player has used the bloodlust speed boost, increase the bloodLustpoints
-		if (_bloodLust == false){++_bloodLustPoints}
-		//if the player has used the bloodlust speed boost and has accumulated the necessary bloodlust points, gain bloodlust again
-		if (_bloodLust == false && _bloodLustPoints == 5){_bloodLust = true;_bloodLustPoints = 0} 
-		*/
+
 		//++BLOODRAGE
 		if (_bloodRage.active == false && _bloodRage.charges < _bloodRage.maxCharges){
 			if (_bloodRage.refill == 5){
@@ -931,18 +955,23 @@ var _update = function (modifier) {
 		if(_berserk.active == false){
 			--_hero.lives;
 		}else{
+				console.log("killed red");
 				++_redGoblinsCaught;
 				scaleDifficulty("speed");
 				_berserk.active = false;
+				_redGoblin.killed = true;
+				_redGoblin.killX = _redGoblin.x;
+				_redGoblin.killY = _redGoblin.y;
 				_pointsTotal += _redGoblin.points;
 				_redGoblin.pointsEnable = true; //allow for the floating text to be displayed
 				//update de High Score
 				if (_pointsTotal > _highScore){
 				_highScore = _pointsTotal
-				} 
+				}
 			}
 		_redGoblinTouched = true;
 		_redGoblinCaughtXY = [_redGoblin.x,_redGoblin.y]; //registers where the red goblin was touched
+		
 		_redGoblinAppeared = false;
 		clearTimeout(_redGoblinTimerControl);
 		reset();
@@ -972,6 +1001,21 @@ var _update = function (modifier) {
 		clearTimeout(_mushroom.timeCtrl);
 		reset();
 	} 
+	//is the hero touching the heart
+	if ( _heart.show == true &&
+		_hero.x <= (_heart.x + 32)
+		&& _heart.x <= (_hero.x + 32)
+		&& _hero.y <= (_heart.y + 32)
+		&& _heart.y <= (_hero.y + 32)
+	) {
+
+		++_hero.lives;
+		_heart.dropped = false;
+		_heart.show = false;
+		clearTimeout(_heart.timeCtrl);
+		reset();
+	} 
+	
 };
 
 // Draw everything
@@ -1007,6 +1051,11 @@ var _render = function () {
 	if (_mushroom.dropped && _mushroom.show){
 		if (_mushroomReady){
 			_ctx.drawImage(_mushroomImage, _mushroom.x, _mushroom.y);}
+	}
+	
+	if (_heart.dropped && _heart.show){
+		if (_heartReady){
+			_ctx.drawImage(_heartImage, _heart.x, _heart.y);}
 	}
 	
 	if (_hero.lives == 0){
@@ -1211,6 +1260,7 @@ var _render = function () {
 	//if a red goblin is touched when berserk is active, display floating text with the points
 	if (_redGoblin.pointsEnable == true){
 		_ctx.fillText(_redGoblin.points + " pts", _redGoblinCaughtXY[0], _redGoblinCaughtXY[1]);
+		console.log("showing points");
 		setTimeout(function() {
 			_redGoblin.pointsEnable = false;
 		}, _redGoblin.pointsDuration * 1000);
@@ -1287,13 +1337,15 @@ function clearAll(){
 	_redGoblinAppChance = 0.20; 
 	_redGoblinTimeout = 2; 
 	_redGoblin.speed = 180,
-
+	_redGoblin.killed = false;
+	_redGoblin.pointsEnable = false;
 	
 	_mushroom.dropped = false;
 	_mushroom.show = false;
 	_mushroom.pointsEnable = false;
 	
-	
+	_heart.dropped = false;
+	_heart.show = false;
 	_restartImage.src = "images/restart.png";
 	reset();
 	main();
