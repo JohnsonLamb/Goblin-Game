@@ -390,7 +390,7 @@ var _greenGoblin = {
 var _blueGoblin = {
 	x:120,
 	y:120,
-	shroomRate: 0.2 //chance to drop mushroom
+	shroomRate: 0.3 //chance to drop mushroom
 };
 
 var _redGoblin = {
@@ -543,7 +543,7 @@ var _greenGoblinCaught = false; //varibale to control if the green goblin is cau
 var _blueGoblinCaught = false; //varuiable to control if the blue goblin is caught
 var _blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
 var _blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
-var _blueGoblinAppChance = 0.3; //variable to control the probablity of appearance of the blue Goblin
+var _blueGoblinAppChance = 0.35; //variable to control the probablity of appearance of the blue Goblin
 var _blueGoblinTimeout = 2; //variable to control the amount of time the BlueGoblin stays alive
 var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
 var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spawns
@@ -900,7 +900,7 @@ var _update = function (modifier) {
 	) {
 		++_goblinsCaught;
 		++_blueGoblinsCaught;
-		if (_blueGoblinsCaught % 3 == 0){
+		if (_blueGoblinsCaught % 2 == 0){
 			scaleDifficulty("time");
 		}
 		_blueGoblinEndTime = new Date();
@@ -1009,44 +1009,6 @@ var _render = function () {
 			_ctx.drawImage(_mushroomImage, _mushroom.x, _mushroom.y);}
 	}
 	
-	/*
-	if (_bloodLust){
-		if (_bloodLustFullReady) {
-		_ctx.drawImage(_bloodLustFullImage, 50, 0);
-		}
-	}
-	if (_bloodLust == false){
-		switch (_bloodLustPoints){
-			case 0:
-				if (_bloodLustEmptyReady) {
-					_ctx.drawImage(_bloodLustEmptyImage, 50, 0);
-				}
-				break;
-			case 1:
-				if (_bloodLustEmpty1Ready) {
-					_ctx.drawImage(_bloodLustEmpty1Image, 50, 0);
-				}
-				break;
-			case 2:
-				if (_bloodLustEmpty2Ready) {
-					_ctx.drawImage(_bloodLustEmpty2Image, 50, 0);
-				}
-				break;
-			case 3:
-				if (_bloodLustEmpty3Ready) {
-					_ctx.drawImage(_bloodLustEmpty3Image, 50, 0);
-				}
-				break;
-			case 4:
-				if (_bloodLustEmpty4Ready) {
-					_ctx.drawImage(_bloodLustEmpty4Image, 50, 0);
-				}
-				break;
-		}
-		
-		
-	}
-	*/
 	if (_hero.lives == 0){
 		if (_gameOverReady) {
 			_ctx.drawImage(_gameOverImage, 185, 200);
@@ -1308,10 +1270,7 @@ function clearAll(){
 	_blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
 	_blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
 	_blueGoblinGoodSpawn = false;
-	/*
-	_bloodLust = false; //variable to control the speed boost funtion
-	_bloodLustPoints = 0; //varibale to control when bloodlust comes into play
-	*/
+
 	_bloodRage.active = false;
 	_bloodRage.charges = 0;
 	_bloodRage.refill = 0;
@@ -1320,11 +1279,15 @@ function clearAll(){
 	_berserk.active = false;
 	_berserk.charges = 0;
 	
-	_redGoblinTouched = false; //varuiable to control if the blue red Goblin is touched
-	_redGoblinAppeared = false; // variable to control the appearance of the red goblin
-	_redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
-	_redGoblinGoodSpawn = false //variable to control if the red goblin has a good place to spawn
-	_redGoblin.pointsEnable = false
+	_redGoblinTouched = false;
+	_redGoblinAppeared = false; 
+	_redGoblinCaughtXY = []; 
+	_redGoblinGoodSpawn = false;
+	_redGoblin.pointsEnable = false;
+	_redGoblinAppChance = 0.20; 
+	_redGoblinTimeout = 2; 
+	_redGoblin.speed = 180,
+
 	
 	_mushroom.dropped = false;
 	_mushroom.show = false;
