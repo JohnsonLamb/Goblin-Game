@@ -6,6 +6,121 @@ _canvas.width = 680;
 _canvas.height = 480;
 document.getElementById("gameCanvas").appendChild(_canvas);
 
+//Map quadrants
+
+var Q11 ={
+	q: "Q11",
+	x: 50,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q12 ={
+	q: "Q12",
+	x: 195,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q13 ={
+	q: "Q13",
+	x: 50,
+	y: 145,
+	h: 95,
+	w: 145
+}
+var Q14 ={
+	q: "Q14",
+	x: 195,
+	y: 145,
+	h: 95,
+	w: 145
+}
+var Q21 ={
+	q: "Q21",
+	x: 340,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q22 ={
+	q: "Q22",
+	x: 485,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q23 ={
+	q: "Q23",
+	x: 340,
+	y: 145,
+	h: 95,
+	w: 145
+}
+var Q24 ={
+	q: "Q24",
+	x: 485,
+	y: 50,
+	h: 95,
+	w: 145
+}
+var Q31 ={
+	q: "Q31",
+	x: 50,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q32 ={
+	q: "Q32",
+	x: 195,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q33 ={
+	q: "Q33",
+	x: 50,
+	y: 335,
+	h: 95,
+	w: 145
+}
+var Q34 ={
+	q: "Q34",
+	x: 195,
+	y: 335,
+	h: 95,
+	w: 145
+}
+var Q41 ={
+	q: "Q41",
+	x: 340,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q42 ={
+	q: "Q42",
+	x: 485,
+	y: 240,
+	h: 95,
+	w: 145
+}
+var Q43 ={
+	q: "Q43",
+	x: 340,
+	y: 335,
+	h: 95,
+	w: 145
+}
+var Q44 ={
+	q: "Q44",
+	x: 485,
+	y: 335,
+	h: 95,
+	w: 145
+}
+
 // --- Images ---
 
 // Background image
@@ -55,54 +170,6 @@ _redGoblinImage.onload = function () {
 	_redGoblinReady = true;
 };
 _redGoblinImage.src = "images/redGoblin.png";
-
-//Bloodlust EMPTY
-var _bloodLustEmptyReady = false;
-var _bloodLustEmptyImage = new Image();
-_bloodLustEmptyImage.onload = function () {
-	_bloodLustEmptyReady = true;
-};
-_bloodLustEmptyImage.src = "images/BloodlustEMPTY.png";
-
-//Bloodlust EMPTY 1
-var _bloodLustEmpty1Ready = false;
-var _bloodLustEmpty1Image = new Image();
-_bloodLustEmpty1Image.onload = function () {
-	_bloodLustEmpty1Ready = true;
-};
-_bloodLustEmpty1Image.src = "images/BloodlustEMPTY1.png";
-
-//Bloodlust EMPTY 2
-var _bloodLustEmpty2Ready = false;
-var _bloodLustEmpty2Image = new Image();
-_bloodLustEmpty2Image.onload = function () {
-	_bloodLustEmpty2Ready = true;
-};
-_bloodLustEmpty2Image.src = "images/BloodlustEMPTY2.png";
-
-//Bloodlust EMPTY 3
-var _bloodLustEmpty3Ready = false;
-var _bloodLustEmpty3Image = new Image();
-_bloodLustEmpty3Image.onload = function () {
-	_bloodLustEmpty3Ready = true;
-};
-_bloodLustEmpty3Image.src = "images/BloodlustEMPTY3.png";
-
-//Bloodlust EMPTY 4
-var _bloodLustEmpty4Ready = false;
-var _bloodLustEmpty4Image = new Image();
-_bloodLustEmpty4Image.onload = function () {
-	_bloodLustEmpty4Ready = true;
-};
-_bloodLustEmpty4Image.src = "images/BloodlustEMPTY4.png";
-
-//Bloodlust FULL
-var _bloodLustFullReady = false;
-var _bloodLustFullImage = new Image();
-_bloodLustFullImage.onload = function () {
-	_bloodLustFullReady = true;
-};
-_bloodLustFullImage.src = "images/BloodlustFULL.png";
 
 //lives 3
 var _lives3Ready = false;
@@ -393,14 +460,28 @@ var _hero = {
 };
 var _greenGoblin = {
 	x: 0,
-	y: 0
+	y: 0,
+	points: 5,
+	killed: false, //control if the Green Goblin has been killed
 };
 var _blueGoblin = {
-	x:120,
-	y:120,
-	shroomRate: 0.3 //chance to drop mushroom
+	x:0,
+	y:0,
+	shroomRate: 0.3, //chance to drop mushroom
+	points: 50, //holds the Blue Goblin standard Points
+	timePoints: 0, //to hold the time dependent points the player gets for catching the Blue Goblin
+	pointsDuration: 0.5, //to control the amount of time the single goblin score is shown 
+	killed: false, //to control if the blue goblin has been killed
+	killX: 0, //x coordinate where the Blue Goblin was killed
+	killY:0, //y coordinate where the Blue Goblin was killed
+	appeared: false, //to control the appearance of the blue goblin
+	appearChance: 0.35, //to control the probablity of appearance of the blue Goblin
+	duration: 2, // to control the amount of time, in seconds, the BlueGoblin stays on screen
+	timeCtrl:"", //to control the SetTimeOut on the blue goblin 						--->[[not sure of this initialization]]<---
+	appearTime: 0, //to store the time when the blue goblin Spawns
+	killTime: 0, //to store when the Blue Goblin is killed
+	goodSpawn: false,// to control if the spawn location is good
 };
-
 var _redGoblin = {
 	speed: 180,
 	x: 0,
@@ -409,11 +490,19 @@ var _redGoblin = {
 	pointsEnable: false, //variable to control if the red Goblin has been caught with berserk active. Used to display the floating points text
 	pointsDuration: 0.5,
 	heartDrop: 0.5, //drop rate of Heart when the red Goblin is killed
-	killed: false,
-	killX:0,
-	killY:0,
-}
-
+	killed: false, //to control if the player killed the red goblin
+	killX:0, //x coordinate where the player killed the Red Goblin
+	killY:0, //y coordinate where the player killed the Red Goblin
+	harm: false, //to control if the blue red Goblin has harmed the player
+	harmX: 0, //x coordinate where the red Goblin harmed the Player
+	harmY: 0, //y coordinate where the red Goblin harmed the Player
+	appeared: false, //to control the appearance of the red goblin
+	appearChance: 0.20, // to control the probability of appearance of the Red Goblin
+	duration: 2, //to control the amount of time, in seconds, the red goblin stays on the screen
+	timeCtrl:"", ////to control the SetTimeOut on the red goblin 						--->[[not sure of this initialization]]<---
+	goodSpawn: false, //to control if the red goblin has a good place to spawn
+	
+};
 var _mushroom = {
 	x:0,
 	y:0,
@@ -425,8 +514,7 @@ var _mushroom = {
 	timeCtrl:"", //variable to be used to stop the timer when the mushroom is picked up
 	pointsEnable: false, //variable to control if the mushroom has been caught after berserk charges are full. Used to display the floating points text when the Berserk charges are full
 	pointsDuration: 0.5,
-}
-
+};
 var _heart = {
 	x:0,
 	y:0,
@@ -435,149 +523,17 @@ var _heart = {
 	delay: 0.6,
 	duration: 3,
 	timeCtrl:"",
-}
-
-//Map quadrants
-
-var Q11 ={
-	q: "Q11",
-	x: 50,
-	y: 50,
-	h: 95,
-	w: 145
-}
-var Q12 ={
-	q: "Q12",
-	x: 195,
-	y: 50,
-	h: 95,
-	w: 145
-}
-var Q13 ={
-	q: "Q13",
-	x: 50,
-	y: 145,
-	h: 95,
-	w: 145
-}
-var Q14 ={
-	q: "Q14",
-	x: 195,
-	y: 145,
-	h: 95,
-	w: 145
-}
-var Q21 ={
-	q: "Q21",
-	x: 340,
-	y: 50,
-	h: 95,
-	w: 145
-}
-var Q22 ={
-	q: "Q22",
-	x: 485,
-	y: 50,
-	h: 95,
-	w: 145
-}
-var Q23 ={
-	q: "Q23",
-	x: 340,
-	y: 145,
-	h: 95,
-	w: 145
-}
-var Q24 ={
-	q: "Q24",
-	x: 485,
-	y: 50,
-	h: 95,
-	w: 145
-}
-var Q31 ={
-	q: "Q31",
-	x: 50,
-	y: 240,
-	h: 95,
-	w: 145
-}
-var Q32 ={
-	q: "Q32",
-	x: 195,
-	y: 240,
-	h: 95,
-	w: 145
-}
-var Q33 ={
-	q: "Q33",
-	x: 50,
-	y: 335,
-	h: 95,
-	w: 145
-}
-var Q34 ={
-	q: "Q34",
-	x: 195,
-	y: 335,
-	h: 95,
-	w: 145
-}
-var Q41 ={
-	q: "Q41",
-	x: 340,
-	y: 240,
-	h: 95,
-	w: 145
-}
-var Q42 ={
-	q: "Q42",
-	x: 485,
-	y: 240,
-	h: 95,
-	w: 145
-}
-var Q43 ={
-	q: "Q43",
-	x: 340,
-	y: 335,
-	h: 95,
-	w: 145
-}
-var Q44 ={
-	q: "Q44",
-	x: 485,
-	y: 335,
-	h: 95,
-	w: 145
-}
+};
 // Game Score
-var _goblinsCaught = 0; // total goblins caught
-var _greenGoblinsCaught = 0; 
-var _blueGoblinsCaught = 0;
-var _redGoblinsCaught = 0;
-var _pointsGreenGoblin = 5;
-var _pointsBlueGoblin = 50; // variable that holds the Blue Goblin Points standard
-var _pointsBlueGoblinTime = 0; //variable to hold the time dependent points the player gets for catching the Blue Goblin
-var _pointsTotal = 0;
-var _pointsDisplayTime = 0.5; //varibale to control the amount of time the single goblin score is shown 
-var _greenGoblinCaught = false; //varibale to control if the green goblin is caught
-var _blueGoblinCaught = false; //varuiable to control if the blue goblin is caught
-var _blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
-var _blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
-var _blueGoblinAppChance = 0.35; //variable to control the probablity of appearance of the blue Goblin
-var _blueGoblinTimeout = 2; //variable to control the amount of time the BlueGoblin stays alive
-var _blueGoblinTimerControl; //varibale used to control the SetTimeOut on the blue goblin
-var _blueGoblinStartTime; //Variable to store the time when the blue goblin Spawns
-var _blueGoblinEndTime;	// Variable to store when the Blue Goblin is caught
-var _blueGoblinCatchPoints = 0; //NOT IN USE
-var _blueGoblinGoodSpawn = false;
-
-var _highScore = 0; //variable to store the Highscore obtained in the play session. It will be displayed on the Game over Screen
-
-var _bloodLust = false; //variable to control the speed boost funtion
-var _bloodLustPoints = 0; //varibale to control when bloodlust comes into play
-
+var _score = {
+	goblinKills: 0, // Total number of goblins killed
+	greenKills: 0, //number of green goblins killed
+	blueKills: 0, // number of blue goblins killed
+	redKills: 0, //number of red goblins killed
+	points: 0, // points during a game
+	highscore: 0, // Highest score in a play session
+};
+//Abilities
 var _bloodRage ={
 	speed: 300,
 	duration: 1,	//bloodRage time in seconds
@@ -586,23 +542,13 @@ var _bloodRage ={
 	chargeRefill: 5, //number of green goblins that need to be killed to fill up one chargeRefill
 	charges: 0, //current number of charges
 	refill: 0, //current number on the refill meter
-}
-
+};
 var _berserk ={
 	active: false, //berserk is active or not
 	duration: 1.5, //duration of the effect in seconds
 	maxCharges: 3, //maxumim number of charges
 	charges: 0 //current number of charges
-}
-
-var _redGoblinTouched = false; //varuiable to control if the blue red Goblin is touched
-var _redGoblinAppeared = false; // variable to control the appearance of the red goblin
-var _redGoblinAppChance = 0.20; //variable to control the probablity of appearance of the red Goblin
-var _redGoblinTimeout = 2; //variable to control the amount of time the RedGoblin stays alive
-var _redGoblinTimerControl; //varibale used to control the SetTimeOut on the red goblin
-var _redGoblinCaughtXY = []; //variable to store the coordinates where the red goblin was caught
-var _redGoblinGoodSpawn = false //variable to control if the red goblin has a good place to spawn
-
+};
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -629,7 +575,7 @@ var reset = function () {
 	var RedQuadSpawn = Q11; //local varibale to store the quadrant where the red goblin will spawn 
 	var Rand = Math.random(); // Local variable to store the random number calculation (this calculation is done only once)
 	
-	if (_goblinsCaught == 0){
+	if (_score.goblinKills == 0){
 	_hero.x = _canvas.width / 2;
 	_hero.y = _canvas.height / 2;
 	}
@@ -638,33 +584,33 @@ var reset = function () {
 	// The 50 subtracted to the height is to account for the Hero's movement restrictions. So that goblins don't spawn out of reach
 	// Why 50? First I used the width/height minus the pixels I restricted in the hero's update function (90 for width and 80 for height)
 	// Seemed a bit too much because spwans were more towards the inner part to the play area so reduced it to 50.
-	if (_greenGoblinCaught == true || _goblinsCaught == 0 ){
+	if (_greenGoblin.killed == true || _score.goblinKills == 0 ){
 		_greenGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_greenGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64)); 
 	}
 	
 	//Throw the Blue goblin somewhere on screen randomly
-	if (_greenGoblinCaught == true && _blueGoblinAppeared == false){
-		if (Math.random()<_blueGoblinAppChance && _blueGoblinAppeared == false){
-		_blueGoblinAppeared = true;
-		_blueGoblinTimerControl = setTimeout(function() {
-			_blueGoblinAppeared = false;
+	if (_greenGoblin.killed == true && _blueGoblin.appeared == false){
+		if (Math.random()<_blueGoblin.appearChance && _blueGoblin.appeared == false){
+		_blueGoblin.appeared = true;
+		_blueGoblin.timeCtrl = setTimeout(function() {
+			_blueGoblin.appeared = false;
 			
-		}, _blueGoblinTimeout * 1000);
-		_blueGoblinStartTime = new Date();
+		}, _blueGoblin.duration * 1000);
+		_blueGoblin.appearTime = new Date();
 		_blueGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_blueGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64));
-		_blueGoblinGoodSpawn = true;
+		_blueGoblin.goodSpawn = true;
 		}
 		
 	}
 	
 	//Make the mushroom appear
-	if (_blueGoblinCaught == true){
+	if (_blueGoblin.killed == true){
 	if (_mushroom.dropped == false && Math.random() < _blueGoblin.shroomRate){
 			_mushroom.dropped = true;
-			_mushroom.x = _blueGoblinCaughtXY[0];
-			_mushroom.y = _blueGoblinCaughtXY[1];
+			_mushroom.x = _blueGoblin.killX;
+			_mushroom.y = _blueGoblin.killY;
 			//give a little bit of time before the mushroom appears in order for the player to not pick it up without realizing
 			setTimeout(function() {
 				_mushroom.show = true;
@@ -694,14 +640,14 @@ var reset = function () {
 	}
 	
 	//spawn the Red Goblin somewhere
-	if (_greenGoblinCaught == true && _redGoblinAppeared == false){	
+	if (_greenGoblin.killed == true && _redGoblin.appeared == false){	
 		//throw the redGoblin somewhere in the screen randomly
-		if (Math.random()<_redGoblinAppChance && _redGoblinAppeared == false){
-		_redGoblinAppeared = true;
-		_redGoblinTimerControl = setTimeout(function() {
-			_redGoblinAppeared = false;
+		if (Math.random()<_redGoblin.appearChance && _redGoblin.appeared == false){
+		_redGoblin.appeared = true;
+		_redGoblin.timeCtrl = setTimeout(function() {
+			_redGoblin.appeared = false;
 			
-		}, _redGoblinTimeout * 1000);
+		}, _redGoblin.duration * 1000);
 		
 		if (Quad == "Q11"){
 			//the goblin can spawn in the following quandrants: Q22, Q24, Q42, Q44, Q43, Q34, Q33
@@ -782,7 +728,7 @@ var reset = function () {
 		}
 		_redGoblin.x = RedQuadSpawn.x + (Math.random() * RedQuadSpawn.w);
 		_redGoblin.y = RedQuadSpawn.y + (Math.random() * RedQuadSpawn.h);
-		_redGoblinGoodSpawn = true;
+		_redGoblin.goodSpawn = true;
 		}
 	}	
 };
@@ -806,7 +752,6 @@ function checkQuandrant(x,y){
 };
 
 function scaleDifficulty(keyword){
-	
 	// the difficulty will scale by increasing 3 variables of the Red Goblin: chance to appear, speed and time before vanishing.
 	// The chance to appear will increase as the player catches green goblins
 	// The time before vanishing will increase as the player catches blue goblins
@@ -815,23 +760,26 @@ function scaleDifficulty(keyword){
 	if (keyword == "speed"){
 		if (_redGoblin.speed <= 250){
 			_redGoblin.speed += 10;
-			//console.log("speed up");
 		}
 	}
 	//original: 0.20
 	if (keyword == "chance"){
-		if (_redGoblinAppChance <=0.90){
-		_redGoblinAppChance += 0.05;}
-		//console.log("chance up");
+		if (_redGoblin.appearChance <=0.90){
+		_redGoblin.appearChance += 0.05;}
 	}
 	//original: 2
 	if (keyword == "time"){
-		if (_redGoblinTimeout <= 10){
-		_redGoblinTimeout += 0.5
-		//console.log("time up");
+		if (_redGoblin.duration <= 10){
+		_redGoblin.duration += 0.5
 		}
 	}
 };
+
+function updateHighscore(){
+	if (_score.points > _score.highscore){
+			_score.highscore = _score.points
+		} 
+}
 
 // Update game objects
 //the modifier variable is used to control the speed in which the Hero moves indepently of the speed the script is executed
@@ -867,7 +815,6 @@ var _update = function (modifier) {
 	
 	if (32 in _keysDown && _bloodRage.active == false && _bloodRage.charges >= 1){
 		_hero.speed = _hero.speed + _bloodRage.speed;
-		//console.log("speed: "+_hero.speed);
 		_bloodRage.active = true;
 		--_bloodRage.charges;
 		setTimeout(function() {
@@ -891,9 +838,9 @@ var _update = function (modifier) {
 		&& _hero.y <= (_greenGoblin.y + 32)
 		&& _greenGoblin.y <= (_hero.y + 32)
 	) {
-		++_goblinsCaught;
-		++_greenGoblinsCaught
-		if (_greenGoblinsCaught % 6 == 0){
+		++_score.goblinKills;
+		++_score.greenKills
+		if (_score.greenKills % 6 == 0){
 			scaleDifficulty("chance");
 		}
 
@@ -906,47 +853,46 @@ var _update = function (modifier) {
 		}
 		//--BLOODRAGE
 		
-		_pointsTotal += _pointsGreenGoblin;
+		_score.points += _greenGoblin.points;
 		//update the High Score
-		if (_pointsTotal > _highScore){
-			_highScore = _pointsTotal
-		} 
-		_greenGoblinCaught = true;
+		updateHighscore();
+		_greenGoblin.killed = true;
 		reset();
 	}
 	//is the hero touching the Blue Goblin?
-	if ( _blueGoblinAppeared == true &&
-		_blueGoblinGoodSpawn == true &&
+	if ( _blueGoblin.appeared == true &&
+		_blueGoblin.goodSpawn == true &&
 		_hero.x <= (_blueGoblin.x + 32)
 		&& _blueGoblin.x <= (_hero.x + 32)
 		&& _hero.y <= (_blueGoblin.y + 32)
 		&& _blueGoblin.y <= (_hero.y + 32)
 	) {
-		++_goblinsCaught;
-		++_blueGoblinsCaught;
-		if (_blueGoblinsCaught % 2 == 0){
+		++_score.goblinKills;
+		++_score.blueKills;
+		if (_score.blueKills % 2 == 0){
 			scaleDifficulty("time");
 		}
-		_blueGoblinEndTime = new Date();
-		var _timeDiff = _blueGoblinEndTime - _blueGoblinStartTime;
+		_blueGoblin.killTime = new Date();
+		var _timeDiff = _blueGoblin.killTime - _blueGoblin.appearTime;
 		if (_timeDiff < 500){_timeDiff = 500;}
-		_pointsBlueGoblinTime = Math.round(_pointsBlueGoblin / (_timeDiff / 1000));
-		_pointsTotal += _pointsBlueGoblinTime;
+		_blueGoblin.timePoints = Math.round(_blueGoblin.points / (_timeDiff / 1000));
+		_score.points += _blueGoblin.timePoints;
 		//update de High Score
-		if (_pointsTotal > _highScore){
-			_highScore = _pointsTotal
-		} 
-		_blueGoblinCaught = true;
-		_blueGoblinCaughtXY = [_blueGoblin.x,_blueGoblin.y]; //registers where the blue goblin was caught to show the points
-		_blueGoblinAppeared = false;
-		clearTimeout(_blueGoblinTimerControl);
+		updateHighscore();
+		_blueGoblin.killed = true;
+		//registers where the blue goblin was caught to show the points
+		_blueGoblin.killX = _blueGoblin.x;
+		_blueGoblin.killY = _blueGoblin.y;
+
+		_blueGoblin.appeared = false;
+		clearTimeout(_blueGoblin.timeCtrl);
 		
 		
 		reset();
 	} 
 	//is the hero touching the red goblin
-	if ( _redGoblinAppeared == true &&
-		_redGoblinGoodSpawn == true &&
+	if ( _redGoblin.appeared == true &&
+		_redGoblin.goodSpawn == true &&
 		_hero.x <= (_redGoblin.x + 32)
 		&& _redGoblin.x <= (_hero.x + 32)
 		&& _hero.y <= (_redGoblin.y + 32)
@@ -955,25 +901,25 @@ var _update = function (modifier) {
 		if(_berserk.active == false){
 			--_hero.lives;
 		}else{
-				console.log("killed red");
-				++_redGoblinsCaught;
+				++_score.goblinKills
+				++_score.redKills;
 				scaleDifficulty("speed");
 				_berserk.active = false;
 				_redGoblin.killed = true;
 				_redGoblin.killX = _redGoblin.x;
 				_redGoblin.killY = _redGoblin.y;
-				_pointsTotal += _redGoblin.points;
+				_score.points += _redGoblin.points;
 				_redGoblin.pointsEnable = true; //allow for the floating text to be displayed
 				//update de High Score
-				if (_pointsTotal > _highScore){
-				_highScore = _pointsTotal
-				}
+				updateHighscore();
 			}
-		_redGoblinTouched = true;
-		_redGoblinCaughtXY = [_redGoblin.x,_redGoblin.y]; //registers where the red goblin was touched
+		_redGoblin.harm = true;
+		//registers where the red goblin has harmed the player
+		_redGoblin.harmX = _redGoblin.x;
+		_redGoblin.harmY = _redGoblin.y;
 		
-		_redGoblinAppeared = false;
-		clearTimeout(_redGoblinTimerControl);
+		_redGoblin.appeared = false;
+		clearTimeout(_redGoblin.timeCtrl);
 		reset();
 	} 
 	//is the hero touching the mushroom
@@ -987,13 +933,10 @@ var _update = function (modifier) {
 			++_berserk.charges;
 		}else{
 			scaleDifficulty("speed");
-			_pointsTotal += _mushroom.points;
+			_score.points += _mushroom.points;
 			_mushroom.pointsEnable = true;
 			//update de High Score
-			if (_pointsTotal > _highScore){
-				_highScore = _pointsTotal
-			}
-			
+			updateHighscore();			
 		}
 		
 		_mushroom.dropped = false;
@@ -1036,14 +979,14 @@ var _render = function () {
 		_ctx.drawImage(_greenGoblinImage, _greenGoblin.x, _greenGoblin.y);
 	}
 	
-	if (_blueGoblinReady && _blueGoblinGoodSpawn) {
-			if (_blueGoblinAppeared == true){
+	if (_blueGoblinReady && _blueGoblin.goodSpawn) {
+			if (_blueGoblin.appeared == true){
 			_ctx.drawImage(_blueGoblinImage, _blueGoblin.x, _blueGoblin.y);}
 		
 	}
 	
-	if (_redGoblinReady && _redGoblinGoodSpawn) {
-			if (_redGoblinAppeared == true){
+	if (_redGoblinReady && _redGoblin.goodSpawn) {
+			if (_redGoblin.appeared == true){
 			_ctx.drawImage(_redGoblinImage, _redGoblin.x, _redGoblin.y);}
 		
 	}
@@ -1076,7 +1019,7 @@ var _render = function () {
 		_ctx.shadowOffsetX = 3;
 		_ctx.shadowOffsetY = 3;
 		_ctx.shadowBlur = 10;
-		_ctx.fillText(_highScore+" pts", 280+20, 130);
+		_ctx.fillText(_score.highscore+" pts", 280+20, 130);
 	}
 	switch(_hero.lives){
 		case 3:
@@ -1245,8 +1188,8 @@ var _render = function () {
 	_ctx.shadowOffsetX = 3;
     _ctx.shadowOffsetY = 3;
 	_ctx.shadowBlur = 10;
-	_ctx.fillText(_pointsTotal + " pts", 510, -5);
-	_ctx.fillText(_highScore + "pts", 220, -5);
+	_ctx.fillText(_score.points + " pts", 510, -5);
+	_ctx.fillText(_score.highscore + "pts", 220, -5);
 	
 	//if a mushroom is caught and the Berserk charges are full, disply floating text with the points)
 	if (_mushroom.pointsEnable == true){
@@ -1259,23 +1202,22 @@ var _render = function () {
 	
 	//if a red goblin is touched when berserk is active, display floating text with the points
 	if (_redGoblin.pointsEnable == true){
-		_ctx.fillText(_redGoblin.points + " pts", _redGoblinCaughtXY[0], _redGoblinCaughtXY[1]);
-		console.log("showing points");
+		_ctx.fillText(_redGoblin.points + " pts", _redGoblin.harmX, _redGoblin.harmY); //using the harm coordinates because the heart spawn uses the kill coordinates and this animation would make the heart move.
 		setTimeout(function() {
 			_redGoblin.pointsEnable = false;
 		}, _redGoblin.pointsDuration * 1000);
-		--_redGoblinCaughtXY[1];
+		--_redGoblin.harmY;
 	}
 	
 	//If a goblin was caught, display the points gained
-	if (_blueGoblinCaught == true){
-	_ctx.fillText(_pointsBlueGoblinTime + " pts", _blueGoblinCaughtXY[0], _blueGoblinCaughtXY[1]);
+	if (_blueGoblin.killed == true){
+	_ctx.fillText(_blueGoblin.timePoints + " pts", _blueGoblin.killX, _blueGoblin.killY);
 		setTimeout(function() {
-			_blueGoblinCaught = false;
-		}, _pointsDisplayTime * 1000);
-		--_blueGoblinCaughtXY[1];
+			_blueGoblin.killed = false;
+		}, _blueGoblin.pointsDuration * 1000);
+		--_blueGoblin.killY;
 	}
-	if (_greenGoblinCaught == true){_greenGoblinCaught = false;} //when the player catches a blue goblin this ensures that a new green goblin is not spawned.
+	if (_greenGoblin.killed == true){_greenGoblin.killed = false;} //when the player catches a blue goblin this ensures that a new green goblin is not spawned.
 };
 
 // The main game loop
@@ -1309,41 +1251,47 @@ var _restartSelected = false; //variable to be control what color of the Reset t
 function clearAll(){
 	_restartSelected = false;
 	_hero.lives = 3;
-	_goblinsCaught = 0; // total goblins caught
-    _greenGoblinsCaught = 0; 
-	_blueGoblinsCaught = 0;
-	_redGoblinsCaught = 0;
-	_pointsBlueGoblinTime = 0; //variable to hold the time dependent points the player gets for catching the Blue Goblin
-	_pointsTotal = 0;
-	_greenGoblinCaught = false; //varibale to control if the green goblin is caught
-	_blueGoblinCaught = false; //varuiable to control if the blue goblin is caught
-	_blueGoblinCaughtXY = []; //variable to store the coordinates where the blue goblin was caught
-	_blueGoblinAppeared = false; // variable to control the appearance of the blue goblin
-	_blueGoblinGoodSpawn = false;
-
+	//score
+	_score.goblinKills = 0; 
+    _score.greenKills = 0; 
+	_score.blueKills = 0;
+	_score.redKills = 0;
+	_score.points = 0;
+	//Blue goblin
+	_blueGoblin.timePoints = 0; 
+	_blueGoblin.killed = false;
+	_blueGoblin.killX = 0;
+    _blueGoblin.killY = 0;
+	_blueGoblin.appeared = false; 
+	_blueGoblin.goodSpawn = false;
+	//GreenGoblin
+	_greenGoblin.killed = false; //varibale to control if the green goblin is caught
+	//BloodRage
 	_bloodRage.active = false;
 	_bloodRage.charges = 0;
 	_bloodRage.refill = 0;
-	
-
+	//Berserk
 	_berserk.active = false;
 	_berserk.charges = 0;
-	
-	_redGoblinTouched = false;
-	_redGoblinAppeared = false; 
-	_redGoblinCaughtXY = []; 
-	_redGoblinGoodSpawn = false;
+	//Red Goblin
+	_redGoblin.harm = false;
+	_redGoblin.appeared = false; 
+	_redGoblin.harmX = 0;
+	_redGoblin.harmY = 0;
+	_redGoblin.killX = 0;
+	_redGoblin.killY = 0;
+	_redGoblin.goodSpawn = false;
 	_redGoblin.pointsEnable = false;
-	_redGoblinAppChance = 0.20; 
-	_redGoblinTimeout = 2; 
+	_redGoblin.appearChance = 0.20; 
+	_redGoblin.duration = 2; 
 	_redGoblin.speed = 180,
 	_redGoblin.killed = false;
 	_redGoblin.pointsEnable = false;
-	
+	//Mushroom
 	_mushroom.dropped = false;
 	_mushroom.show = false;
 	_mushroom.pointsEnable = false;
-	
+	//heart
 	_heart.dropped = false;
 	_heart.show = false;
 	_restartImage.src = "images/restart.png";
@@ -1379,7 +1327,6 @@ _canvas.addEventListener('mousemove', function(evt) {
 					_restartSelected = true;
 					
 				}
-				//console.log("over");
 			}
 		}
     }else{
@@ -1389,9 +1336,7 @@ _canvas.addEventListener('mousemove', function(evt) {
 					_restartImage.src = "images/restart.png";
 					_render();
 					_restartSelected = false;
-					
 				}
-				//console.log("over");
 			}
 		}
 	}
