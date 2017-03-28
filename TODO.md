@@ -29,6 +29,8 @@ TO DO:
 
 - Scale dificulty DONE[25-03-2017]
 
+- make the heart de droped by green goblins (very rare) and increase the drop rate of the red goblin.
+
 - LeaderBoard
 
 - Clear indicators (animations?) that the player has interacted with something - caught goblins or mushrooms, got hurt by the red goblin.
