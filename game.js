@@ -450,6 +450,41 @@ _heartImage.onload = function () {
 };
 _heartImage.src = "images/heart.png";
 
+//Blood Stain 1 
+var _bloodStain1Ready = false;
+var _bloodStain1Image = new Image();
+_bloodStain1Image.onload = function () {
+	_bloodStain1Ready = true;
+};
+_bloodStain1Image.src = "images/bloodstain1.png";
+//Blood Stain 2
+var _bloodStain2Ready = false;
+var _bloodStain2Image = new Image();
+_bloodStain2Image.onload = function () {
+	_bloodStain2Ready = true;
+};
+_bloodStain2Image.src = "images/bloodstain2.png";
+//Blood Stain 3 
+var _bloodStain3Ready = false;
+var _bloodStain3Image = new Image();
+_bloodStain3Image.onload = function () {
+	_bloodStain3Ready = true;
+};
+_bloodStain3Image.src = "images/bloodstain3.png";
+//Blood Stain 4 
+var _bloodStain4Ready = false;
+var _bloodStain4Image = new Image();
+_bloodStain4Image.onload = function () {
+	_bloodStain4Ready = true;
+};
+_bloodStain4Image.src = "images/bloodstain4.png";
+//Blood Stain 5 
+var _bloodStain5Ready = false;
+var _bloodStain5Image = new Image();
+_bloodStain5Image.onload = function () {
+	_bloodStain5Ready = true;
+};
+_bloodStain5Image.src = "images/bloodstain5.png";
 // Game objects
 var _hero = {
 	speed: 256, // movement in pixels per second
@@ -462,6 +497,7 @@ var _greenGoblin = {
 	x: 0,
 	y: 0,
 	points: 5,
+	appeared: false,
 	killed: false, //control if the Green Goblin has been killed
 };
 var _blueGoblin = {
@@ -469,7 +505,8 @@ var _blueGoblin = {
 	y:0,
 	shroomRate: 0.3, //chance to drop mushroom
 	points: 50, //holds the Blue Goblin standard Points
-	timePoints: 0, //to hold the time dependent points the player gets for catching the Blue Goblin
+	timePoints: 0, //to hold the time dependent points the player gets for killing the Blue Goblin
+	pointsEnable: false, //variable to control when to display the points when killing a blue goblin
 	pointsDuration: 0.5, //to control the amount of time the single goblin score is shown 
 	killed: false, //to control if the blue goblin has been killed
 	killX: 0, //x coordinate where the Blue Goblin was killed
@@ -549,6 +586,13 @@ var _berserk ={
 	maxCharges: 3, //maxumim number of charges
 	charges: 0 //current number of charges
 };
+
+//Visual Effects
+/*var _bloodStain = {
+	x:0,
+	y:0,
+}*/
+var _stainList = [];
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -584,9 +628,10 @@ var reset = function () {
 	// The 50 subtracted to the height is to account for the Hero's movement restrictions. So that goblins don't spawn out of reach
 	// Why 50? First I used the width/height minus the pixels I restricted in the hero's update function (90 for width and 80 for height)
 	// Seemed a bit too much because spwans were more towards the inner part to the play area so reduced it to 50.
-	if (_greenGoblin.killed == true || _score.goblinKills == 0 ){
+	if (_greenGoblin.killed == true || _greenGoblin.appeared == false ){
 		_greenGoblin.x = 32 + (Math.random() * ((_canvas.width-50) - 64));
 		_greenGoblin.y = 32 + (Math.random() * ((_canvas.height-50) - 64)); 
+		_greenGoblin.appeared = true;
 	}
 	
 	//Throw the Blue goblin somewhere on screen randomly
@@ -780,6 +825,31 @@ function updateHighscore(){
 			_score.highscore = _score.points
 		} 
 }
+// function that updates the array of bloodstains)
+function makeBloodstain(x,y){
+	//choosing the bloodstain image to introduce variation
+		var _bloodStain = {
+			x:0,
+			y:0,
+			stain: 1,
+		};
+		var rand =Math.random();
+		if( rand < 0.2){
+			_bloodStain.stain=1;
+		}else if(rand >= 0.2 && rand < 0.4){
+				_bloodStain.stain = 2;
+				}
+			else if(rand >= 0.4 && rand < 0.6){
+				_bloodStain.stain = 3;
+				}
+			else if(rand >= 0.6 && rand < 0.8){
+				_bloodStain.stain = 4;
+				}
+			else{_bloodStain.stain = 5;}
+		_bloodStain.x =x;
+		_bloodStain.y = y;
+		_stainList.push(_bloodStain);
+}
 
 // Update game objects
 //the modifier variable is used to control the speed in which the Hero moves indepently of the speed the script is executed
@@ -832,8 +902,8 @@ var _update = function (modifier) {
 	}
 	
 	// Is the hero Touching the Green Goblin?
-	if (
-		_hero.x <= (_greenGoblin.x + 32)
+	if (_greenGoblin.appeared == true 
+		&& _hero.x <= (_greenGoblin.x + 32)
 		&& _greenGoblin.x <= (_hero.x + 32)
 		&& _hero.y <= (_greenGoblin.y + 32)
 		&& _greenGoblin.y <= (_hero.y + 32)
@@ -857,6 +927,31 @@ var _update = function (modifier) {
 		//update the High Score
 		updateHighscore();
 		_greenGoblin.killed = true;
+		_greenGoblin.appeared = false;
+		makeBloodstain(_greenGoblin.x,_greenGoblin.y);
+		/* //Blood Stains
+		var _bloodStain = {
+			x:0,
+			y:0,
+			stain: 1,
+		};
+		//choosing the bloodstain image to introduce variation
+		var rand =Math.random();
+		if( rand < 0.2){
+			_bloodStain.stain=1;
+		}else if(rand >= 0.2 && rand < 0.4){
+				_bloodStain.stain = 2;
+				}
+			else if(rand >= 0.4 && rand < 0.6){
+				_bloodStain.stain = 3;
+				}
+			else if(rand >= 0.6 && rand < 0.8){
+				_bloodStain.stain = 4;
+				}
+			else{_bloodStain.stain = 5;}
+		_bloodStain.x = _greenGoblin.x;
+		_bloodStain.y = _greenGoblin.y;
+		_stainList.push(_bloodStain); */
 		reset();
 	}
 	//is the hero touching the Blue Goblin?
@@ -880,13 +975,13 @@ var _update = function (modifier) {
 		//update de High Score
 		updateHighscore();
 		_blueGoblin.killed = true;
+		_blueGoblin.pointsEnable = true;
 		//registers where the blue goblin was caught to show the points
 		_blueGoblin.killX = _blueGoblin.x;
 		_blueGoblin.killY = _blueGoblin.y;
-
 		_blueGoblin.appeared = false;
 		clearTimeout(_blueGoblin.timeCtrl);
-		
+		makeBloodstain(_blueGoblin.x,_blueGoblin.y);
 		
 		reset();
 	} 
@@ -912,6 +1007,7 @@ var _update = function (modifier) {
 				_redGoblin.pointsEnable = true; //allow for the floating text to be displayed
 				//update de High Score
 				updateHighscore();
+				makeBloodstain(_redGoblin.x,_redGoblin.y);
 			}
 		_redGoblin.harm = true;
 		//registers where the red goblin has harmed the player
@@ -958,6 +1054,9 @@ var _update = function (modifier) {
 		clearTimeout(_heart.timeCtrl);
 		reset();
 	} 
+	//update the kill state of the Blue and Green Goblins
+	if (_blueGoblin.killed == true){_blueGoblin.killed = false;}
+	if (_greenGoblin.killed == true){_greenGoblin.killed = false;} 
 	
 };
 
@@ -966,15 +1065,52 @@ var _render = function () {
 	if (_bgReady) {
 		_ctx.drawImage(_bgImage, 0, 0);
 	}
+
+	_ctx.shadowOffsetX = 0;
+	_ctx.shadowOffsetY = 0;
+	for (var i = 0, len = _stainList.length; i < len; i++) {
+		switch(_stainList[i].stain){
+			case 1:
+				if(_bloodStain1Ready){
+					_ctx.drawImage(_bloodStain1Image,_stainList[i].x,_stainList[i].y);
+				}
+				break;
+			case 2:
+				if(_bloodStain2Ready){
+					_ctx.drawImage(_bloodStain2Image,_stainList[i].x,_stainList[i].y);
+				}
+				break;
+			case 3:
+				if(_bloodStain3Ready){
+					_ctx.drawImage(_bloodStain3Image,_stainList[i].x,_stainList[i].y);
+				}
+				break;
+			case 4:
+				if(_bloodStain4Ready){
+					_ctx.drawImage(_bloodStain4Image,_stainList[i].x,_stainList[i].y);
+				}
+				break;
+			case 5:
+				if(_bloodStain5Ready){
+					_ctx.drawImage(_bloodStain5Image,_stainList[i].x,_stainList[i].y);
+				}
+				break;
+		}
+		
+	}
+	//Hero
+	//Without Berserk
 	if (_berserk.active == false){
 		if (_heroReady) {
 			_ctx.drawImage(_heroImage, _hero.x, _hero.y);
 		}
+	//with Berserk
 	}else{
 		if (_heroBerserkReady) {
 			_ctx.drawImage(_heroBerserkImage, _hero.x, _hero.y);
 		}
 	}
+		
 	if (_greenGoblinReady) {
 		_ctx.drawImage(_greenGoblinImage, _greenGoblin.x, _greenGoblin.y);
 	}
@@ -1210,14 +1346,20 @@ var _render = function () {
 	}
 	
 	//If a goblin was caught, display the points gained
-	if (_blueGoblin.killed == true){
+	if (_blueGoblin.pointsEnable == true){
 	_ctx.fillText(_blueGoblin.timePoints + " pts", _blueGoblin.killX, _blueGoblin.killY);
 		setTimeout(function() {
-			_blueGoblin.killed = false;
+			_blueGoblin.pointsEnable = false;
 		}, _blueGoblin.pointsDuration * 1000);
 		--_blueGoblin.killY;
 	}
-	if (_greenGoblin.killed == true){_greenGoblin.killed = false;} //when the player catches a blue goblin this ensures that a new green goblin is not spawned.
+	
+	
+	
+	/*
+	// Update the kill status of the Blue and Green Goblins
+	if (_blueGoblin.killed == true){_blueGoblin.killed = false;}
+	if (_greenGoblin.killed == true){_greenGoblin.killed = false;} */
 };
 
 // The main game loop
@@ -1258,14 +1400,16 @@ function clearAll(){
 	_score.redKills = 0;
 	_score.points = 0;
 	//Blue goblin
-	_blueGoblin.timePoints = 0; 
+	_blueGoblin.timePoints = 0;
+	_blueGoblin.pointsEnable = false;
 	_blueGoblin.killed = false;
 	_blueGoblin.killX = 0;
     _blueGoblin.killY = 0;
 	_blueGoblin.appeared = false; 
 	_blueGoblin.goodSpawn = false;
 	//GreenGoblin
-	_greenGoblin.killed = false; //varibale to control if the green goblin is caught
+	_greenGoblin.killed = false;
+	_greenGoblin.appeared = false;
 	//BloodRage
 	_bloodRage.active = false;
 	_bloodRage.charges = 0;
@@ -1295,6 +1439,8 @@ function clearAll(){
 	_heart.dropped = false;
 	_heart.show = false;
 	_restartImage.src = "images/restart.png";
+	//bloodstains
+	_stainList = [];
 	reset();
 	main();
 }

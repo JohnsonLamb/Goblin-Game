@@ -34,6 +34,7 @@ TO DO:
 - LeaderBoard
 
 - Clear indicators (animations?) that the player has interacted with something - caught goblins or mushrooms, got hurt by the red goblin.
+	- [DONE]29-03-2017 Added bloodstains when the player kills a 	goblin. Randomized stains from a pool of 5 images. 
 
 - Make the green and blue goblins spawn away from the player to provide a better game experience. The player needs to understand when he catches a Goblin.
 

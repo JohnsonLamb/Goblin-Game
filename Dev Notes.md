@@ -113,3 +113,13 @@ DONE:
 - Removed completed features from the Upcoming Features section.
 
 - Added scaling difficulty. The Red Goblin will have greater chance to appear as the player catches green goblins. The time it takes for him to disappear will be longer as the player catches blue goblins. Picking up mushrooms for points (after having 3) and killing Red Goblins will increase his speed. These will increase up to a cap.
+
+--27&28-03-2017--
+
+- Refactored the code: 
+	Redid a lot of the variables in a more organized way.
+	Placed repeated code in functions
+
+--29-03-2017--
+
+- Added bloodstains when the player kills Goblins. Randomized between 5 different bloodtains to look better. For now there is no limit on the bloodstains on the ground but might be worth tweaking in the future.
