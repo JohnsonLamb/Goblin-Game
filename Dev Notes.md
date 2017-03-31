@@ -123,3 +123,7 @@ DONE:
 --29-03-2017--
 
 - Added bloodstains when the player kills Goblins. Randomized between 5 different bloodtains to look better. For now there is no limit on the bloodstains on the ground but might be worth tweaking in the future.
+
+--31-03-2017--
+
+- Added visual feedback when the player is hurt by the red goblin. The Hero now flashes red when hit.

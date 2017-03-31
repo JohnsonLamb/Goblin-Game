@@ -35,10 +35,14 @@ TO DO:
 
 - Clear indicators (animations?) that the player has interacted with something - caught goblins or mushrooms, got hurt by the red goblin.
 	- [DONE]29-03-2017 Added bloodstains when the player kills a 	goblin. Randomized stains from a pool of 5 images. 
+	- [DONE]31-03-2017 Added visual feedback when the player is 	harmed by the red goblin. The hero now flashes red.
+	- Add bloodtains of different colors for the different 	goblins.
+
+- Review colision logic (the values uses are still from the original tutorial and the sizes of the images are slightly different)
 
 - Make the green and blue goblins spawn away from the player to provide a better game experience. The player needs to understand when he catches a Goblin.
 
-- Clean up the code
+- Clean up the code DONE [29-03-2017]
 
 - [maybe] add the slow mechanic
 

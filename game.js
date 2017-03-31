@@ -147,6 +147,14 @@ _heroBerserkImage.onload = function () {
 };
 _heroBerserkImage.src = "images/heroBerserk.png";
 
+// Hero Harmed image
+var _heroHarmReady = false;
+var _heroHarmImage = new Image();
+_heroHarmImage.onload = function () {
+	_heroHarmReady = true;
+};
+_heroHarmImage.src = "images/heroHarm.png";
+
 // Green Goblin image
 var _greenGoblinReady = false;
 var _greenGoblinImage = new Image();
@@ -492,6 +500,8 @@ var _hero = {
 	lives: 3,
 	x: 0,
 	y: 0,
+	harm: false, //used to diplay the red image of the hero to indicate he has been harmed
+	harmDisplayTime: 0.15, //time the hero remais red when harmed
 };
 var _greenGoblin = {
 	x: 0,
@@ -519,6 +529,7 @@ var _blueGoblin = {
 	killTime: 0, //to store when the Blue Goblin is killed
 	goodSpawn: false,// to control if the spawn location is good
 };
+
 var _redGoblin = {
 	speed: 180,
 	x: 0,
@@ -530,7 +541,6 @@ var _redGoblin = {
 	killed: false, //to control if the player killed the red goblin
 	killX:0, //x coordinate where the player killed the Red Goblin
 	killY:0, //y coordinate where the player killed the Red Goblin
-	harm: false, //to control if the blue red Goblin has harmed the player
 	harmX: 0, //x coordinate where the red Goblin harmed the Player
 	harmY: 0, //y coordinate where the red Goblin harmed the Player
 	appeared: false, //to control the appearance of the red goblin
@@ -929,29 +939,7 @@ var _update = function (modifier) {
 		_greenGoblin.killed = true;
 		_greenGoblin.appeared = false;
 		makeBloodstain(_greenGoblin.x,_greenGoblin.y);
-		/* //Blood Stains
-		var _bloodStain = {
-			x:0,
-			y:0,
-			stain: 1,
-		};
-		//choosing the bloodstain image to introduce variation
-		var rand =Math.random();
-		if( rand < 0.2){
-			_bloodStain.stain=1;
-		}else if(rand >= 0.2 && rand < 0.4){
-				_bloodStain.stain = 2;
-				}
-			else if(rand >= 0.4 && rand < 0.6){
-				_bloodStain.stain = 3;
-				}
-			else if(rand >= 0.6 && rand < 0.8){
-				_bloodStain.stain = 4;
-				}
-			else{_bloodStain.stain = 5;}
-		_bloodStain.x = _greenGoblin.x;
-		_bloodStain.y = _greenGoblin.y;
-		_stainList.push(_bloodStain); */
+
 		reset();
 	}
 	//is the hero touching the Blue Goblin?
@@ -995,6 +983,10 @@ var _update = function (modifier) {
 	) {
 		if(_berserk.active == false){
 			--_hero.lives;
+			_hero.harm = true;
+			//registers where the red goblin has harmed the player
+			_redGoblin.harmX = _redGoblin.x;
+			_redGoblin.harmY = _redGoblin.y;
 		}else{
 				++_score.goblinKills
 				++_score.redKills;
@@ -1009,10 +1001,7 @@ var _update = function (modifier) {
 				updateHighscore();
 				makeBloodstain(_redGoblin.x,_redGoblin.y);
 			}
-		_redGoblin.harm = true;
-		//registers where the red goblin has harmed the player
-		_redGoblin.harmX = _redGoblin.x;
-		_redGoblin.harmY = _redGoblin.y;
+		
 		
 		_redGoblin.appeared = false;
 		clearTimeout(_redGoblin.timeCtrl);
@@ -1101,7 +1090,13 @@ var _render = function () {
 	//Hero
 	//Without Berserk
 	if (_berserk.active == false){
-		if (_heroReady) {
+		if (_hero.harm){
+			if (_heroHarmReady) {
+			_ctx.drawImage(_heroHarmImage, _hero.x, _hero.y);
+			setTimeout(function() {
+			_hero.harm = false;
+		}, _hero.harmDisplayTime * 1000);
+		}}else if (_heroReady) {
 			_ctx.drawImage(_heroImage, _hero.x, _hero.y);
 		}
 	//with Berserk
@@ -1393,6 +1388,7 @@ var _restartSelected = false; //variable to be control what color of the Reset t
 function clearAll(){
 	_restartSelected = false;
 	_hero.lives = 3;
+	_hero.harm = false;
 	//score
 	_score.goblinKills = 0; 
     _score.greenKills = 0; 
