@@ -493,6 +493,76 @@ _bloodStain5Image.onload = function () {
 	_bloodStain5Ready = true;
 };
 _bloodStain5Image.src = "images/bloodstain5.png";
+//Blood Stain Green 1 
+var _bloodStainGreen1Ready = false;
+var _bloodStainGreen1Image = new Image();
+_bloodStainGreen1Image.onload = function () {
+	_bloodStainGreen1Ready = true;
+};
+_bloodStainGreen1Image.src = "images/bloodstainGreen1.png";
+//Blood Stain Green 2
+var _bloodStainGreen2Ready = false;
+var _bloodStainGreen2Image = new Image();
+_bloodStainGreen2Image.onload = function () {
+	_bloodStainGreen2Ready = true;
+};
+_bloodStainGreen2Image.src = "images/bloodstainGreen2.png";
+//Blood Stain Green 3 
+var _bloodStainGreen3Ready = false;
+var _bloodStainGreen3Image = new Image();
+_bloodStainGreen3Image.onload = function () {
+	_bloodStainGreen3Ready = true;
+};
+_bloodStainGreen3Image.src = "images/bloodstainGreen3.png";
+//Blood Stain Green 4 
+var _bloodStainGreen4Ready = false;
+var _bloodStainGreen4Image = new Image();
+_bloodStainGreen4Image.onload = function () {
+	_bloodStainGreen4Ready = true;
+};
+_bloodStainGreen4Image.src = "images/bloodstainGreen4.png";
+//Blood Stain Green 5 
+var _bloodStainGreen5Ready = false;
+var _bloodStainGreen5Image = new Image();
+_bloodStainGreen5Image.onload = function () {
+	_bloodStainGreen5Ready = true;
+};
+_bloodStainGreen5Image.src = "images/bloodstainGreen5.png";
+//Blood Stain Blue 1 
+var _bloodStainBlue1Ready = false;
+var _bloodStainBlue1Image = new Image();
+_bloodStainBlue1Image.onload = function () {
+	_bloodStainBlue1Ready = true;
+};
+_bloodStainBlue1Image.src = "images/bloodstainBlue1.png";
+//Blood Stain Blue 2
+var _bloodStainBlue2Ready = false;
+var _bloodStainBlue2Image = new Image();
+_bloodStainBlue2Image.onload = function () {
+	_bloodStainBlue2Ready = true;
+};
+_bloodStainBlue2Image.src = "images/bloodstainBlue2.png";
+//Blood Stain Blue 3 
+var _bloodStainBlue3Ready = false;
+var _bloodStainBlue3Image = new Image();
+_bloodStainBlue3Image.onload = function () {
+	_bloodStainBlue3Ready = true;
+};
+_bloodStainBlue3Image.src = "images/bloodstainBlue3.png";
+//Blood Stain Blue 4 
+var _bloodStainBlue4Ready = false;
+var _bloodStainBlue4Image = new Image();
+_bloodStainBlue4Image.onload = function () {
+	_bloodStainBlue4Ready = true;
+};
+_bloodStainBlue4Image.src = "images/bloodstainBlue4.png";
+//Blood Stain Blue 5 
+var _bloodStainBlue5Ready = false;
+var _bloodStainBlue5Image = new Image();
+_bloodStainBlue5Image.onload = function () {
+	_bloodStainBlue5Ready = true;
+};
+_bloodStainBlue5Image.src = "images/bloodstainBlue5.png";
 // Game objects
 var _hero = {
 	speed: 256, // movement in pixels per second
@@ -602,7 +672,11 @@ var _berserk ={
 	x:0,
 	y:0,
 }*/
+
+//list of blood stains. Using 3 separate ones to be able to limit each one separatly
 var _stainList = [];
+var _stainListBlue = [];
+var _stainListGreen = [];
 // Handle keyboard controls
 // In order for the game's logic to live solely in once place and to retain tight control over when and if things happen,
 // we just want to store the user input for later instead of acting on it immediately.
@@ -836,7 +910,7 @@ function updateHighscore(){
 		} 
 }
 // function that updates the array of bloodstains)
-function makeBloodstain(x,y){
+function makeBloodstain(x,y,goblin){
 	//choosing the bloodstain image to introduce variation
 		var _bloodStain = {
 			x:0,
@@ -858,7 +932,13 @@ function makeBloodstain(x,y){
 			else{_bloodStain.stain = 5;}
 		_bloodStain.x =x;
 		_bloodStain.y = y;
-		_stainList.push(_bloodStain);
+		if (goblin == "red"){
+			_stainList.push(_bloodStain);
+		}else if (goblin == "blue"){
+			_stainListBlue.push(_bloodStain);
+		}else if(goblin == "green"){
+			_stainListGreen.push(_bloodStain);
+		}
 }
 
 // Update game objects
@@ -938,7 +1018,7 @@ var _update = function (modifier) {
 		updateHighscore();
 		_greenGoblin.killed = true;
 		_greenGoblin.appeared = false;
-		makeBloodstain(_greenGoblin.x,_greenGoblin.y);
+		makeBloodstain(_greenGoblin.x,_greenGoblin.y,"green");
 
 		reset();
 	}
@@ -969,7 +1049,7 @@ var _update = function (modifier) {
 		_blueGoblin.killY = _blueGoblin.y;
 		_blueGoblin.appeared = false;
 		clearTimeout(_blueGoblin.timeCtrl);
-		makeBloodstain(_blueGoblin.x,_blueGoblin.y);
+		makeBloodstain(_blueGoblin.x,_blueGoblin.y, "blue");
 		
 		reset();
 	} 
@@ -999,7 +1079,7 @@ var _update = function (modifier) {
 				_redGoblin.pointsEnable = true; //allow for the floating text to be displayed
 				//update de High Score
 				updateHighscore();
-				makeBloodstain(_redGoblin.x,_redGoblin.y);
+				makeBloodstain(_redGoblin.x,_redGoblin.y,"red");
 			}
 		
 		
@@ -1054,7 +1134,7 @@ var _render = function () {
 	if (_bgReady) {
 		_ctx.drawImage(_bgImage, 0, 0);
 	}
-
+	//take away the shadows so that the bloodstains don't look like they are hovering
 	_ctx.shadowOffsetX = 0;
 	_ctx.shadowOffsetY = 0;
 	for (var i = 0, len = _stainList.length; i < len; i++) {
@@ -1085,7 +1165,64 @@ var _render = function () {
 				}
 				break;
 		}
-		
+	}
+	for (var i = 0, len = _stainListBlue.length; i < len; i++) {
+		switch(_stainListBlue[i].stain){
+			case 1:
+				if(_bloodStainBlue1Ready){
+					_ctx.drawImage(_bloodStainBlue1Image,_stainListBlue[i].x,_stainListBlue[i].y);
+				}
+				break;
+			case 2:
+				if(_bloodStainBlue2Ready){
+					_ctx.drawImage(_bloodStainBlue2Image,_stainListBlue[i].x,_stainListBlue[i].y);
+				}
+				break;
+			case 3:
+				if(_bloodStainBlue3Ready){
+					_ctx.drawImage(_bloodStainBlue3Image,_stainListBlue[i].x,_stainListBlue[i].y);
+				}
+				break;
+			case 4:
+				if(_bloodStainBlue4Ready){
+					_ctx.drawImage(_bloodStainBlue4Image,_stainListBlue[i].x,_stainListBlue[i].y);
+				}
+				break;
+			case 5:
+				if(_bloodStainBlue5Ready){
+					_ctx.drawImage(_bloodStainBlue5Image,_stainListBlue[i].x,_stainListBlue[i].y);
+				}
+				break;
+		}
+	}
+	for (var i = 0, len = _stainListGreen.length; i < len; i++) {
+		switch(_stainListGreen[i].stain){
+			case 1:
+				if(_bloodStainGreen1Ready){
+					_ctx.drawImage(_bloodStainGreen1Image,_stainListGreen[i].x,_stainListGreen[i].y);
+				}
+				break;
+			case 2:
+				if(_bloodStainGreen2Ready){
+					_ctx.drawImage(_bloodStainGreen2Image,_stainListGreen[i].x,_stainListGreen[i].y);
+				}
+				break;
+			case 3:
+				if(_bloodStainGreen3Ready){
+					_ctx.drawImage(_bloodStainGreen3Image,_stainListGreen[i].x,_stainListGreen[i].y);
+				}
+				break;
+			case 4:
+				if(_bloodStainGreen4Ready){
+					_ctx.drawImage(_bloodStainGreen4Image,_stainListGreen[i].x,_stainListGreen[i].y);
+				}
+				break;
+			case 5:
+				if(_bloodStainGreen5Ready){
+					_ctx.drawImage(_bloodStainGreen5Image,_stainListGreen[i].x,_stainListGreen[i].y);
+				}
+				break;
+		}
 	}
 	//Hero
 	//Without Berserk
@@ -1437,6 +1574,8 @@ function clearAll(){
 	_restartImage.src = "images/restart.png";
 	//bloodstains
 	_stainList = [];
+	_stainListBlue = [];
+	_stainListGreen = [];
 	reset();
 	main();
 }
