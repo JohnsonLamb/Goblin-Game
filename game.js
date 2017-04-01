@@ -579,11 +579,14 @@ var _greenGoblin = {
 	points: 5,
 	appeared: false,
 	killed: false, //control if the Green Goblin has been killed
+	killX: 0,
+	killY: 0,
+	heartDrop: 0.1,
 };
 var _blueGoblin = {
 	x:0,
 	y:0,
-	shroomRate: 0.3, //chance to drop mushroom
+	shroomRate: 0.35, //chance to drop mushroom
 	points: 50, //holds the Blue Goblin standard Points
 	timePoints: 0, //to hold the time dependent points the player gets for killing the Blue Goblin
 	pointsEnable: false, //variable to control when to display the points when killing a blue goblin
@@ -592,7 +595,7 @@ var _blueGoblin = {
 	killX: 0, //x coordinate where the Blue Goblin was killed
 	killY:0, //y coordinate where the Blue Goblin was killed
 	appeared: false, //to control the appearance of the blue goblin
-	appearChance: 0.35, //to control the probablity of appearance of the blue Goblin
+	appearChance: 0.4, //to control the probablity of appearance of the blue Goblin
 	duration: 2, // to control the amount of time, in seconds, the BlueGoblin stays on screen
 	timeCtrl:"", //to control the SetTimeOut on the blue goblin 						--->[[not sure of this initialization]]<---
 	appearTime: 0, //to store the time when the blue goblin Spawns
@@ -766,6 +769,21 @@ var reset = function () {
 		}
 		
 		_redGoblin.killed = false;
+	}
+	//make the heart appear if the player kills a red goblin and has less than 3 lives
+	if (_greenGoblin.killed == true){
+		if (_heart.dropped == false && Math.random() < _greenGoblin.heartDrop && _hero.lives < 3){
+			_heart.dropped = true;
+			_heart.x = _greenGoblin.killX;
+			_heart.y = _greenGoblin.killY;
+			setTimeout(function() {
+				_heart.show = true;
+				_heart.timeCtrl = setTimeout(function() {
+					_heart.show = false;
+					_heart.dropped = false;
+				}, _heart.duration * 1000);
+			}, _heart.delay * 1000);
+		}
 	}
 	
 	//spawn the Red Goblin somewhere
@@ -999,7 +1017,9 @@ var _update = function (modifier) {
 		&& _greenGoblin.y <= (_hero.y + 32)
 	) {
 		++_score.goblinKills;
-		++_score.greenKills
+		++_score.greenKills;
+		_greenGoblin.killX = _hero.x;
+		_greenGoblin.killY = _hero.y;
 		if (_score.greenKills % 6 == 0){
 			scaleDifficulty("chance");
 		}
@@ -1485,13 +1505,6 @@ var _render = function () {
 		}, _blueGoblin.pointsDuration * 1000);
 		--_blueGoblin.killY;
 	}
-	
-	
-	
-	/*
-	// Update the kill status of the Blue and Green Goblins
-	if (_blueGoblin.killed == true){_blueGoblin.killed = false;}
-	if (_greenGoblin.killed == true){_greenGoblin.killed = false;} */
 };
 
 // The main game loop
@@ -1543,6 +1556,8 @@ function clearAll(){
 	//GreenGoblin
 	_greenGoblin.killed = false;
 	_greenGoblin.appeared = false;
+	_greenGoblin.killX = 0;
+	_greenGoblin.killY = 0;
 	//BloodRage
 	_bloodRage.active = false;
 	_bloodRage.charges = 0;
