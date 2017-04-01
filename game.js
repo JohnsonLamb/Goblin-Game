@@ -1470,11 +1470,11 @@ var _render = function () {
 	
 	//if a red goblin is touched when berserk is active, display floating text with the points
 	if (_redGoblin.pointsEnable == true){
-		_ctx.fillText(_redGoblin.points + " pts", _redGoblin.harmX, _redGoblin.harmY); //using the harm coordinates because the heart spawn uses the kill coordinates and this animation would make the heart move.
+		_ctx.fillText(_redGoblin.points + " pts", _redGoblin.killX, _redGoblin.killY); //using the harm coordinates because the heart spawn uses the kill coordinates and this animation would make the heart move.
 		setTimeout(function() {
 			_redGoblin.pointsEnable = false;
 		}, _redGoblin.pointsDuration * 1000);
-		--_redGoblin.harmY;
+		--_redGoblin.killY;
 	}
 	
 	//If a goblin was caught, display the points gained
