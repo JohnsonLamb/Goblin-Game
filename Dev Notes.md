@@ -127,3 +127,11 @@ DONE:
 --31-03-2017--
 
 - Added visual feedback when the player is hurt by the red goblin. The Hero now flashes red when hit.
+
+--02-04-2017--
+
+- Added a limit of green bloodstains in order not to clutter the screen.
+
+- Adjusted difficulty caps: lowered speed and appear chance. Increased the rate at which the duration modifier and the appear chance are increased.
+
+- Increased the time the hero flashes red when hit by the red goblin, by 50 miliseconds

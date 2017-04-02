@@ -571,7 +571,7 @@ var _hero = {
 	x: 0,
 	y: 0,
 	harm: false, //used to diplay the red image of the hero to indicate he has been harmed
-	harmDisplayTime: 0.15, //time the hero remais red when harmed
+	harmDisplayTime: 0.2, //time the hero remais red when harmed
 };
 var _greenGoblin = {
 	x: 0,
@@ -610,7 +610,7 @@ var _redGoblin = {
 	points: 75,
 	pointsEnable: false, //variable to control if the red Goblin has been caught with berserk active. Used to display the floating points text
 	pointsDuration: 0.5,
-	heartDrop: 0.5, //drop rate of Heart when the red Goblin is killed
+	heartDrop: 0.65, //drop rate of Heart when the red Goblin is killed
 	killed: false, //to control if the player killed the red goblin
 	killX:0, //x coordinate where the player killed the Red Goblin
 	killY:0, //y coordinate where the player killed the Red Goblin
@@ -905,19 +905,22 @@ function scaleDifficulty(keyword){
 	// The speed will increase when the player picks up mushrooms after having 3 on the inventory and after killing a red goblin with berserk
 	//original: 180
 	if (keyword == "speed"){
-		if (_redGoblin.speed <= 250){
-			_redGoblin.speed += 10;
+		if (_redGoblin.speed <= 200){
+			_redGoblin.speed += 5;
+			if (_redGoblin.speed == 210){console.log("speed max")}
 		}
 	}
 	//original: 0.20
 	if (keyword == "chance"){
-		if (_redGoblin.appearChance <=0.90){
-		_redGoblin.appearChance += 0.05;}
+		if (_redGoblin.appearChance <=0.80){
+		_redGoblin.appearChance += 0.2;}
+		if (_redGoblin.appearChance == 0.75){console.log("appear chance max")}
 	}
 	//original: 2
 	if (keyword == "time"){
-		if (_redGoblin.duration <= 10){
-		_redGoblin.duration += 0.5
+		if (_redGoblin.duration <= 6){
+		_redGoblin.duration += 1
+		if (_redGoblin.duration == 6){console.log("duration max")}
 		}
 	}
 };
@@ -955,6 +958,7 @@ function makeBloodstain(x,y,goblin){
 		}else if (goblin == "blue"){
 			_stainListBlue.push(_bloodStain);
 		}else if(goblin == "green"){
+			if (_stainListGreen.length == 10){_stainListGreen.pop()}//removing bloodtains when the array has 10 elements to avoid cluttering the screen
 			_stainListGreen.push(_bloodStain);
 		}
 }
