@@ -135,3 +135,9 @@ DONE:
 - Adjusted difficulty caps: lowered speed and appear chance. Increased the rate at which the duration modifier and the appear chance are increased.
 
 - Increased the time the hero flashes red when hit by the red goblin, by 50 miliseconds
+
+--03-04-2017--
+
+- Added a points multiplier when th player reaches max difficulty.
+
+- Added a limit to all bloodstains

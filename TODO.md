@@ -38,7 +38,7 @@ TO DO:
 	- [DONE]29-03-2017 Added bloodstains when the player kills a 	goblin. Randomized stains from a pool of 5 images. 
 	- [DONE]31-03-2017 Added visual feedback when the player is 	harmed by the red goblin. The hero now flashes red.
 	- [DONE]31-04-2017 Add bloodtains of different colors for 	the different goblins.
-	- [DONE]02-04-2017 Add a limit to the number of green 	bloodstains.
+	- [DONE]02-04-2017 Add a limit to the number of bloodstains.
 
 - Review colision logic (the values uses are still from the original tutorial and the sizes of the images are slightly different)
 
@@ -48,7 +48,11 @@ TO DO:
 
 - [DONE]02-04-2017 Scaling Difficulty: lower speed cap for red goblin
 
-- Scaling Difficulty:implement a points multiplier when difficulty is at max.
+- Scaling Difficulty:implement a points multiplier when difficulty is at max.[DONE]03-04-2017
+
+- Change the colors of the multiplier x2 to the normal yellow and black and add a greyd out x2.
+
+- Test the max difficulty mechanic to see what is apppropriate
 
 - Improve score screen: add number of the different Goblins killed
 

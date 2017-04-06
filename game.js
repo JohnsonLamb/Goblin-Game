@@ -563,6 +563,28 @@ _bloodStainBlue5Image.onload = function () {
 	_bloodStainBlue5Ready = true;
 };
 _bloodStainBlue5Image.src = "images/bloodstainBlue5.png";
+//Multiplier
+var _multiplierReady = false;
+var _multiplierImage = new Image();
+_multiplierImage.onload = function () {
+	_multiplierReady = true;
+};
+_multiplierImage.src = "images/multiplier.png";
+//x2
+var _x2Ready = false;
+var _x2Image = new Image();
+_x2Image.onload = function () {
+	_x2Ready = true;
+};
+_x2Image.src = "images/x2.png";
+//x2 black & white
+var _x2bwReady = false;
+var _x2bwImage = new Image();
+_x2bwImage.onload = function () {
+	_x2bwReady = true;
+};
+_x2bwImage.src = "images/x2bw.png";
+// Game objects
 // Game objects
 var _hero = {
 	speed: 256, // movement in pixels per second
@@ -595,7 +617,7 @@ var _blueGoblin = {
 	killX: 0, //x coordinate where the Blue Goblin was killed
 	killY:0, //y coordinate where the Blue Goblin was killed
 	appeared: false, //to control the appearance of the blue goblin
-	appearChance: 0.4, //to control the probablity of appearance of the blue Goblin
+	appearChance: 0.6, //to control the probablity of appearance of the blue Goblin
 	duration: 2, // to control the amount of time, in seconds, the BlueGoblin stays on screen
 	timeCtrl:"", //to control the SetTimeOut on the blue goblin 						--->[[not sure of this initialization]]<---
 	appearTime: 0, //to store the time when the blue goblin Spawns
@@ -645,6 +667,7 @@ var _heart = {
 	timeCtrl:"",
 };
 // Game Score
+
 var _score = {
 	goblinKills: 0, // Total number of goblins killed
 	greenKills: 0, //number of green goblins killed
@@ -652,6 +675,9 @@ var _score = {
 	redKills: 0, //number of red goblins killed
 	points: 0, // points during a game
 	highscore: 0, // Highest score in a play session
+	multiplier: 1, //used to increase the points the player gets when increasing the difficulty
+	showMulti: false, // Used for displaying the Multiplier Text when the player achieves max difficulty
+	showMultiTime: 1.5, // Used to control the amount of time the Multiplier text is shown
 };
 //Abilities
 var _bloodRage ={
@@ -907,21 +933,25 @@ function scaleDifficulty(keyword){
 	if (keyword == "speed"){
 		if (_redGoblin.speed <= 200){
 			_redGoblin.speed += 5;
-			if (_redGoblin.speed == 210){console.log("speed max")}
+			//if (_redGoblin.speed == 200){console.log("speed max")}
 		}
 	}
 	//original: 0.20
 	if (keyword == "chance"){
-		if (_redGoblin.appearChance <=0.80){
+		if (_redGoblin.appearChance <=0.8){
 		_redGoblin.appearChance += 0.2;}
-		if (_redGoblin.appearChance == 0.75){console.log("appear chance max")}
+		//if (_redGoblin.appearChance == 0.8){console.log("appear chance max")}
 	}
 	//original: 2
 	if (keyword == "time"){
 		if (_redGoblin.duration <= 6){
 		_redGoblin.duration += 1
-		if (_redGoblin.duration == 6){console.log("duration max")}
+		//if (_redGoblin.duration == 6){console.log("duration max")}
 		}
+	}
+	if (_redGoblin.duration >= 6 && _redGoblin.appearChance >=0.8 && _redGoblin.speed >= 200 && _score.multiplier == 1){ //multiplier == 1 means that the multiplier hasn't been changed yet
+		_score.multiplier = 2;
+		_score.showMulti = true;
 	}
 };
 
@@ -954,11 +984,13 @@ function makeBloodstain(x,y,goblin){
 		_bloodStain.x =x;
 		_bloodStain.y = y;
 		if (goblin == "red"){
+			if (_stainList.length == 5){_stainList.pop()}
 			_stainList.push(_bloodStain);
 		}else if (goblin == "blue"){
+			if (_stainListBlue.length == 5){_stainListBlue.pop()}
 			_stainListBlue.push(_bloodStain);
 		}else if(goblin == "green"){
-			if (_stainListGreen.length == 10){_stainListGreen.pop()}//removing bloodtains when the array has 10 elements to avoid cluttering the screen
+			if (_stainListGreen.length == 5){_stainListGreen.pop()}//removing bloodtains when the array has 10 elements to avoid cluttering the screen
 			_stainListGreen.push(_bloodStain);
 		}
 }
@@ -1037,7 +1069,7 @@ var _update = function (modifier) {
 		}
 		//--BLOODRAGE
 		
-		_score.points += _greenGoblin.points;
+		_score.points += _greenGoblin.points * _score.multiplier;
 		//update the High Score
 		updateHighscore();
 		_greenGoblin.killed = true;
@@ -1063,7 +1095,7 @@ var _update = function (modifier) {
 		var _timeDiff = _blueGoblin.killTime - _blueGoblin.appearTime;
 		if (_timeDiff < 500){_timeDiff = 500;}
 		_blueGoblin.timePoints = Math.round(_blueGoblin.points / (_timeDiff / 1000));
-		_score.points += _blueGoblin.timePoints;
+		_score.points += _blueGoblin.timePoints * _score.multiplier;
 		//update de High Score
 		updateHighscore();
 		_blueGoblin.killed = true;
@@ -1099,7 +1131,7 @@ var _update = function (modifier) {
 				_redGoblin.killed = true;
 				_redGoblin.killX = _redGoblin.x;
 				_redGoblin.killY = _redGoblin.y;
-				_score.points += _redGoblin.points;
+				_score.points += _redGoblin.points * _score.multiplier;
 				_redGoblin.pointsEnable = true; //allow for the floating text to be displayed
 				//update de High Score
 				updateHighscore();
@@ -1122,7 +1154,7 @@ var _update = function (modifier) {
 			++_berserk.charges;
 		}else{
 			scaleDifficulty("speed");
-			_score.points += _mushroom.points;
+			_score.points += _mushroom.points * _score.multiplier;
 			_mushroom.pointsEnable = true;
 			//update de High Score
 			updateHighscore();			
@@ -1468,7 +1500,7 @@ var _render = function () {
 	}
 	
 	if(_highscoreTopReady){
-		_ctx.drawImage(_highscoreTopImage,45,2);
+		_ctx.drawImage(_highscoreTopImage,30,2);
 	}
 	
 	// Score
@@ -1481,11 +1513,11 @@ var _render = function () {
     _ctx.shadowOffsetY = 3;
 	_ctx.shadowBlur = 10;
 	_ctx.fillText(_score.points + " pts", 510, -5);
-	_ctx.fillText(_score.highscore + "pts", 220, -5);
+	_ctx.fillText(_score.highscore + "pts", 205, -5);
 	
 	//if a mushroom is caught and the Berserk charges are full, disply floating text with the points)
 	if (_mushroom.pointsEnable == true){
-		_ctx.fillText(_mushroom.points + " pts", _mushroom.x, _mushroom.y);
+		_ctx.fillText(_mushroom.points*_score.multiplier + " pts", _mushroom.x, _mushroom.y);
 		setTimeout(function() {
 			_mushroom.pointsEnable = false;
 		}, _mushroom.pointsDuration * 1000);
@@ -1494,7 +1526,7 @@ var _render = function () {
 	
 	//if a red goblin is touched when berserk is active, display floating text with the points
 	if (_redGoblin.pointsEnable == true){
-		_ctx.fillText(_redGoblin.points + " pts", _redGoblin.killX, _redGoblin.killY); //using the harm coordinates because the heart spawn uses the kill coordinates and this animation would make the heart move.
+		_ctx.fillText(_redGoblin.points*_score.multiplier + " pts", _redGoblin.killX, _redGoblin.killY); //using the harm coordinates because the heart spawn uses the kill coordinates and this animation would make the heart move.
 		setTimeout(function() {
 			_redGoblin.pointsEnable = false;
 		}, _redGoblin.pointsDuration * 1000);
@@ -1503,12 +1535,30 @@ var _render = function () {
 	
 	//If a goblin was caught, display the points gained
 	if (_blueGoblin.pointsEnable == true){
-	_ctx.fillText(_blueGoblin.timePoints + " pts", _blueGoblin.killX, _blueGoblin.killY);
+	_ctx.fillText(_blueGoblin.timePoints*_score.multiplier + " pts", _blueGoblin.killX, _blueGoblin.killY);
 		setTimeout(function() {
 			_blueGoblin.pointsEnable = false;
 		}, _blueGoblin.pointsDuration * 1000);
 		--_blueGoblin.killY;
 	}
+	
+	if (_score.showMulti){
+		if (_multiplierReady) {
+			_ctx.drawImage(_multiplierImage, 260, 400);
+		}
+		setTimeout(function() {
+			_score.showMulti = false;
+		}, _score.showMultiTime * 1000);
+	}
+	if (_score.multiplier == 2){
+		if (_x2Ready) {
+			_ctx.drawImage(_x2Image, 335, 5);
+		}
+	}else if(_score.multiplier == 1){
+		if (_x2Ready) {
+		_ctx.drawImage(_x2bwImage, 335, 5);
+		}
+		}
 };
 
 // The main game loop
@@ -1549,6 +1599,8 @@ function clearAll(){
 	_score.blueKills = 0;
 	_score.redKills = 0;
 	_score.points = 0;
+	_score.multiplier = 1;
+	_score.showMulti = false;
 	//Blue goblin
 	_blueGoblin.timePoints = 0;
 	_blueGoblin.pointsEnable = false;
