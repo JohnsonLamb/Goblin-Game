@@ -1,3 +1,4 @@
+//Commenting in 2023 to see if github pages works
 // Create the canvas
 var _canvas = document.createElement("canvas");
 _canvas.setAttribute("id", "theGame");
